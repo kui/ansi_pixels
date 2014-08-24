@@ -2849,7 +2849,7 @@ z=this.R3(a,C.CS)
 if(typeof z!=="string")H.vh(P.u(z))
 z=H.bR("http://ansipixels.k-ui.jp/%s.html","%s",z)
 a.VX=this.ct(a,C.nm,a.VX,z)
-z="-c \"$(curl -s https://gist.githubusercontent.com/kui/1ad5065b2d5ea323c7ba/raw/ap.py)\" \""+H.d(this.R3(a,C.CS))+"\""
+z="-c \"$(curl -s https://raw.githubusercontent.com/kui/ansi_pixels/master/tool/ansi-pixels.py)\" \""+H.d(this.R3(a,C.CS))+"\""
 a.Ec=this.ct(a,C.eu,a.Ec,z)
 y=P.hK(window.location.href)
 x=P.R6(this.R3(a,C.CS),y.gJf(y),y.r0,null,y.gtp(y),y.tP,null,y.Fi,y.ku)
@@ -3139,7 +3139,7 @@ dO:{
 $1:[function(a){var z,y,x
 z=this.a
 y=J.RE(z)
-x="-c \"$(curl -s https://gist.githubusercontent.com/kui/1ad5065b2d5ea323c7ba/raw/ap.py)\" \""+H.d(y.R3(z,C.CS))+"\""
+x="-c \"$(curl -s https://raw.githubusercontent.com/kui/ansi_pixels/master/tool/ansi-pixels.py)\" \""+H.d(y.R3(z,C.CS))+"\""
 z.Ec=y.ct(z,C.eu,z.Ec,x)
 return},"$1",null,2,0,null,82,"call"],
 $isEH:true},
