@@ -2,7 +2,7 @@
 <link rel="import" href="packages/pixel_canvas/pixel_canvas.html">
 <link rel="import" href="packages/ansi_color_palette/ansi_color_palette.html">
 <link rel="import" href="packages/fold_button/fold_button.html">
-<polymer-element name="ansi-pixels" attributes="ansiTextServer">
+<polymer-element name="ansi-pixels">
   <template>
     <link rel="stylesheet" href="../main.css">
     <style>
@@ -139,6 +139,11 @@
               kui avater
             </a>
           </li>
+          <li>
+            <a href="#eAGrVirIrEjNCc6sSlWyMjXQUUpKd87PyS9SslIKcndy1DDQUYAiPQtNJR2lNLh0eEZmSSpQJBnEDy5ITAYaoGRkagYUystPL8pMKVayKikqTdWB2ADkRUcb6MBhrA6YZwaEMB6YBSKhPAhElTOF6oOZElsLAJ-TMsM=">
+              ANSI Pixels favicon
+            </a>
+          </li>
         </ul>
       </section>
 
@@ -167,8 +172,8 @@
             <th>Pixel Size:</th>
             <td>
               <div class="flex-wrapper">
-                <input type="number" value="{{pixelSizeSetting}}" min="10" max="50">
-                <input type="range" value="{{pixelSizeSetting}}" min="10" max="50">
+                <input type="number" value="{{pixelSizeSetting}}" min="4" max="50">
+                <input type="range" value="{{pixelSizeSetting}}" min="4" max="50">
               </div>
             </td>
           </tr>

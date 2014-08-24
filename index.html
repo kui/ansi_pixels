@@ -4,6 +4,18 @@
 
     <title>ANSI Pixels</title>
 
+    <link rel="shortcut icon" href="favicon.png" type="image/png">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@k_ui">
+    <meta name="twitter:title" content="ANSI Pixels">
+    <meta name="twitter:description" content="An editor for pixel arts (ANSI art) in your terminal.">
+    <meta name="twitter:creator" content="@k_ui">
+    <meta name="twitter:image:src" content="https://kui.github.io/ansi_pixels/cover120x.png">
+    <meta property="og:title" content="ANSI Pixels">
+    <meta property="og:description" content="An editor for pixel arts (ANSI art) in your terminal.">
+    <meta property="og:image" content="https://kui.github.io/ansi_pixels/cover.png">
+
     
     
 
@@ -16,7 +28,7 @@
   <body><link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet" type="text/css"><style>body {
   background-image: url(bg.png);
 }
-header {
+header, footer {
   background-color: rgba(0, 0, 0, 0.8);
   color: #ddd;
   padding: 12px;
@@ -27,7 +39,7 @@ header {
 h1 {
   font-weight: normal;
 }
-header > p {
+header > p, footer > p {
   font-size: 80%;
 }
 a {
@@ -891,12 +903,12 @@ html /deep/ [segment], html /deep/ segment {
 <polymer-element name="on-unfolding" noscript="">
   <template><content></content></template>
 </polymer-element>
-<polymer-element name="ansi-pixels" attributes="ansiTextServer">
+<polymer-element name="ansi-pixels">
   <template>
     <style>body {
   background-image: url(bg.png);
 }
-header {
+header, footer {
   background-color: rgba(0, 0, 0, 0.8);
   color: #ddd;
   padding: 12px;
@@ -907,7 +919,7 @@ header {
 h1 {
   font-weight: normal;
 }
-header > p {
+header > p, footer > p {
   font-size: 80%;
 }
 a {
@@ -1124,6 +1136,11 @@ th {
               kui avater
             </a>
           </li>
+          <li>
+            <a href="#eAGrVirIrEjNCc6sSlWyMjXQUUpKd87PyS9SslIKcndy1DDQUYAiPQtNJR2lNLh0eEZmSSpQJBnEDy5ITAYaoGRkagYUystPL8pMKVayKikqTdWB2ADkRUcb6MBhrA6YZwaEMB6YBSKhPAhElTOF6oOZElsLAJ-TMsM=">
+              ANSI Pixels favicon
+            </a>
+          </li>
         </ul>
       </section>
 
@@ -1152,8 +1169,8 @@ th {
             <th>Pixel Size:</th>
             <td>
               <div class="flex-wrapper">
-                <input type="number" value="{{pixelSizeSetting}}" min="10" max="50">
-                <input type="range" value="{{pixelSizeSetting}}" min="10" max="50">
+                <input type="number" value="{{pixelSizeSetting}}" min="4" max="50">
+                <input type="range" value="{{pixelSizeSetting}}" min="4" max="50">
               </div>
             </td>
           </tr>
@@ -1216,8 +1233,12 @@ th {
         (<a href="http://en.wikipedia.org/wiki/ANSI_art" title="ANSI art - Wikipedia, the free encyclopedia">ANSI art</a>)
         in your terminal.
       </p>
+      <p>ANSI Pixels might be working right only at Google Chrome.</p>
     </header>
     <ansi-pixels></ansi-pixels>
+    <footer>
+
+    </footer>
     <a href="https://github.com/kui/ansi_pixels"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
   
 
