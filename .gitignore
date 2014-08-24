@@ -1,0 +1,6 @@
+/pubspec.lock
+packages
+*~
+.*
+!/.gitignore
+/build

@@ -1,0 +1,215 @@
+<link rel="import" href="packages/polymer/polymer.html">
+<link rel="import" href="packages/pixel_canvas/pixel_canvas.html">
+<link rel="import" href="packages/ansi_color_palette/ansi_color_palette.html">
+<link rel="import" href="packages/fold_button/fold_button.html">
+<polymer-element name="ansi-pixels" attributes="ansiTextServer">
+  <template>
+    <link rel="stylesheet" href="../main.css">
+    <style>
+      #bgcolor-container {
+        background-color: {{bgColor}};
+      }
+      #console {
+        color: {{fgColor}};
+      }
+    </style>
+
+    <div id="bgcolor-container" on-mousedown="{{foldAll}}">
+
+      <section id="console">
+        <p title="Paste this into your command-line terminal">
+          <code>$ </code>
+          <input
+            x-hide?="{{!commands['curl']}}"
+            class="cmd"
+            value="curl -s '{{ansiTextUrl}}'"
+            on-focus="{{selectCommand}}"
+            on-blur="{{updateAnsiTextUrl}}">
+          <input
+            x-hide?="{{!commands['wget']}}"
+            class="cmd"
+            value="wget -q -O- '{{ansiTextUrl}}'"
+            on-focus="{{selectCommand}}"
+            on-blur="{{updateAnsiTextUrl}}">
+          <input
+            x-hide?="{{!commands['script']}}"
+            class="cmd"
+            value="python {{pythonArgs}}"
+            on-focus="{{selectCommand}}"
+            on-blur="{{updatePythonArgs}}">
+        </p>
+      </section>
+
+      <section id="controller" on-mousedown="{{stopPropergation}}">
+        <section id="current-action">
+          <p>Current Action: {{currentActionName}}</p>
+        </section>
+        <section id="color-space">
+          Colors:
+          <select value="{{colorSpace}}">
+            <option>8</option>
+            <option>16</option>
+            <option>256</option>
+          </select>,
+          Code: {{drawingColorCode == null ? 'None' : drawingColorCode.code}}
+        </section>
+        <section id="palette">
+          <ansi-color-palette
+             colorSpace="{{colorSpace}}"></ansi-color-palette>
+          <button id="erase-colors" on-click="{{deselectColor}}"
+            x-active?="{{drawingColorCode == null}}">
+            Erase Colors
+          </button>
+        </section>
+        <section id="selection">
+          <h3>Selection</h3>
+          <ul>
+            <li><button
+              on-click="{{canvas.startSameColorsSelection}}"
+              >All same colors</button>
+            <li><button
+              on-click="{{canvas.startSameColorNeiborsSelection}}"
+              >Same color neighbors</button>
+            <li><button
+              on-click="{{canvas.startRectSelection}}"
+              >Rectangle</button>
+            <li><span class="or-ctrl-click">or <code>ctrl + left-click</code></span>
+          </ul>
+        </section>
+        <section id="operation">
+          <h3>Operation</h3>
+          <ul>
+            <li><button
+              disabled?="{{!hasSelection}}"
+              on-click="{{canvas.copySelection}}"
+              >Copy</button>
+            <li><button
+              disabled?="{{!hasSelection}}"
+              on-click="{{canvas.cutSelection}}"
+              >Cut</button>
+            <li><button
+              disabled?="{{!hasSelection}}"
+              on-click="{{canvas.fillSelection}}"
+              >Fill</button>
+            <li><button
+              disabled?="{{!hasFloatLayer}}"
+              on-click="{{canvas.pasteFloatLayer}}"
+              >Paste</button>
+            <li><button
+              disabled?="{{!hasOutline}}"
+              on-click="{{delete}}"
+              >Delete</button>
+          </ul>
+        </section>
+        <section id="nogrids-wrapper">
+          <p>
+            <input id="nogrids" type="checkbox" checked="{{nogrids}}">
+            <label for="nogrids">No grid-lines</label>
+          </p>
+        </section>
+        <section id="download">
+          <p id="share-link-wrapper">
+            <label for="share-link">Share link :</label>
+            <input id="share-link" value="{{shareLink}}"
+              placeholder="Focus here" size="10"
+              on-focus="{{selectShareLink}}"
+              on-blur="{{updateShareLink}}">
+          </p>
+          <p>
+            <button id="download-as-png" title="Download as a .png image"
+              on-click="{{downloadAsPng}}">Download as PNG</button>
+          </p>
+        </section>
+      </section>
+
+      <section id="canvas">
+        <pixel-canvas drawable
+          horizontalPixels="{{hpixels}}"
+          verticalPixels="{{vpixels}}"
+          pixelSize="{{pixelSize}}"
+          noGridlines="{{nogrids}}"
+          gridlineColor="{{gridColor}}"></pixel-canvas>
+      </section>
+
+      <section id="settings" on-mousedown="{{stopPropergation}}">
+        <h2>Settings</h2>
+        <table>
+          <tr>
+            <th>Horizontal Pixels:</th>
+            <td>
+              <div class="flex-wrapper">
+                <input id="hpixels" type="number" value="{{hpixelsSetting}}" min="4" max="256">
+                <input type="range" value="{{hpixelsSetting}}" min="4" max="256">
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>Vertical Pixels:</th>
+            <td>
+              <div class="flex-wrapper">
+                <input id="vpixels" type="number" value="{{vpixelsSetting}}" min="4" max="256">
+                <input type="range" value="{{vpixelsSetting}}" min="4" max="256">
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>Pixel Size:</th>
+            <td>
+              <div class="flex-wrapper">
+                <input type="number" value="{{pixelSizeSetting}}" min="10" max="50">
+                <input type="range" value="{{pixelSizeSetting}}" min="10" max="50">
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>Terminal FG Color:</th>
+            <td><input id="fg-color" type="text" value="{{fgColor}}" list="terminal-colors"></td>
+          </tr>
+          <tr>
+            <th>Terminal BG Color:</th>
+            <td><input id="bg-color" type="text" value="{{bgColor}}" list="terminal-colors"></td>
+          </tr>
+          <tr>
+            <th>Sample Command:</th>
+            <td>
+              <label><input type="radio" name="cmd" checked="{{commands['curl']}}">curl</label>
+              <label><input type="radio" name="cmd" checked="{{commands['wget']}}">wget</label>
+              <label><input type="radio" name="cmd" checked="{{commands['script']}}">script(required curl & python)</label>
+            </td>
+          </tr>
+          <tr title="You can use the browser-back as 'undo' if you checked this.">
+            <th><label for="stacking-history">Stack into history:</label></th>
+            <td>
+              <input type="checkbox" checked="{{isStackingHistory}}"
+                id="stacking-history">
+            </td>
+          </tr>
+        </table>
+      </section>
+
+      <section id="fold-buttons" on-mousedown="{{stopPropergation}}">
+        <fold-button target="#controller">
+          <on-folding>Open</on-folding>
+          <on-unfolding>Close</on-unfolding>
+          Tools
+        </fold-button>
+        <fold-button target="#settings" folding>
+          <on-folding>Open</on-folding>
+          <on-unfolding>Close</on-unfolding>
+          Settings
+        </fold-button>
+      </section>
+
+      <datalist id="terminal-colors">
+        <option value="Black"></option>
+        <option value="RGBA(0, 0, 0, 0.8)"></option>
+        <option value="White"></option>
+        <option value="RGBA(255, 255, 255, 0.9)"></option>
+        <option value="Gray"></option>
+        <option value="RGBA(190, 190, 190, 0.8)"></option>
+      </datalist>
+
+    </div>
+  </template>
+  <script type="application/dart" src="ansi_pixels.dart"></script>
+</polymer-element>
