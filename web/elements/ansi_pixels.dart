@@ -19,7 +19,7 @@ class AnsiPixelsElement extends PolymerElement {
   static final Rgba DARK_GRID_COLOR = new Rgba(0, 0, 0, 127);
   static final Rgba BASE_BG_COLOR = new Rgba(240, 240, 240, 255);
   static final ZIPPED_JSON_UPDATE_DELAY = new Duration(seconds: 5);
-  static final SCRIPT_URL = 'https://gist.githubusercontent.com/kui/1ad5065b2d5ea323c7ba/raw/ap.py';
+  static final SCRIPT_URL = 'https://raw.githubusercontent.com/kui/ansi_pixels/master/tool/ansi-pixels.py';
   static final SHARE_LINK = 'http://ansipixels.k-ui.jp/%s.html';
   static final ANSI_TEXT_URL = 'http://ansipixels.k-ui.jp/%s';
 
