@@ -1,0 +1,1213 @@
+<!DOCTYPE html><html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ANSI Pixels</title>
+
+    
+    
+
+    
+    
+    
+    
+    
+  </head>
+  <body><link href="http://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet" type="text/css"><style>body {
+  background-image: url(bg.png);
+}
+header {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #ddd;
+  padding: 12px;
+  font-family: 'Press Start 2P', cursive;
+  border-radius: 3px;
+  margin: 12px 0px;
+}
+h1 {
+  font-weight: normal;
+}
+header > p {
+  font-size: 80%;
+}
+header a {
+  color: #66f;
+}
+input[type="checkbox"], button, label {
+  cursor: pointer;
+}
+button[disabled] {
+  cursor: default;
+}
+section {
+  margin: 12px;
+}
+#bgcolor-container {
+  padding: 12px;
+  border-radius: 3px;
+  position: relative;
+}
+#console {
+  white-space: nowrap;
+  margin-top: 30px;
+  margin-bottom: 0px;
+}
+#console > p {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: pointer;
+  margin: 0px;
+}
+#console code {
+  padding: 3px;
+}
+#console input[x-hide] {
+  display: none;
+}
+#console.selected > p {
+  text-overflow: clip;
+}
+#console .cmd {
+  width: 100%;
+  font-family: mono;
+  border: 1px inset transparent;
+  background-color: transparent;
+  cursor: pointer;
+  color: inherit;
+}
+#console .cmd:focus {
+  border: 1px inset black;
+  background-color: white;
+  cursor: text;
+  color: black;
+}
+#controller {
+  background-color: rgba(255, 255, 255, 0.6);
+  color: #333;
+  padding: 9px;
+  border-radius: 3px;
+  box-shadow: 3px 3px 1px #000;
+  border: 1px solid #666;
+  box-sizing: border-box;
+  position: absolute;
+  right: 0px; top: 60px;
+}
+#controller > section {
+  margin: 6px;
+}
+#controller h3 {
+  margin: 6px;
+}
+#controller ul {
+  margin: 3px;
+}
+#selection, #operation {
+  float: left;
+  padding: 0px 10px;
+}
+#nogrids-wrapper { clear: both; }
+#download > p {
+  margin: 10px 0px;
+  white-space: nowrap;
+}
+#share-link {
+  width: 180px;
+}
+#selection > ul, #operation > ul {
+  list-style-type: none;
+  padding: 0px;
+}
+#selection .or-ctrl-click {
+  display: inline-block;
+}
+ansi-color-palette {
+  mergin: 5px auto;
+}
+#canvas {
+  display: inline-block;
+  box-sizing: border-box;
+}
+#settings {
+  position: absolute;
+  background-color: rgba(247, 255, 255, 0.95);
+  top: 87px; bottom: 87px;
+  left: 87px; right: 87px;
+  padding: 27px;
+  box-shadow: 6px 6px 0px #000;
+  border-radius: 3px;
+  border: 2px solid #333;
+  box-sizing: border-box;
+}
+#settings > h2 {
+  margin-top: 0px;
+}
+th {
+  font-weight: normal;
+  text-align: right;
+}
+.flex-wrapper {
+  display: flex;
+  align-items: center;
+}
+.flex-wrapper > span, .flex-wrapper > input{
+  display: flex-item;
+}
+#fold-buttons {
+  position: absolute;
+  top: 0px; right: 0px;
+}
+</style><script src="packages/web_components/platform.js"></script><script src="packages/web_components/dart_support.js"></script>
+
+
+
+
+
+
+<!-- unminfied for debugging:
+<link rel="import" href="src/js/polymer/layout.html">
+<script src="src/js/polymer/polymer.concat.js"></script>
+-->
+
+
+
+<style shim-shadowdom="">
+/*******************************
+          Flex Layout
+*******************************/
+
+html /deep/ [layout][horizontal], html /deep/ [layout][vertical] {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+html /deep/ [layout][horizontal][inline], html /deep/ [layout][vertical][inline] {
+  display: -ms-inline-flexbox;
+  display: -webkit-inline-flex;
+  display: inline-flex;
+}
+
+html /deep/ [layout][horizontal] {
+  -ms-flex-direction: row;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+}
+
+html /deep/ [layout][horizontal][reverse] {
+  -ms-flex-direction: row-reverse;
+  -webkit-flex-direction: row-reverse;
+  flex-direction: row-reverse;
+}
+
+html /deep/ [layout][vertical] {
+  -ms-flex-direction: column;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+
+html /deep/ [layout][vertical][reverse] {
+  -ms-flex-direction: column-reverse;
+  -webkit-flex-direction: column-reverse;
+  flex-direction: column-reverse;
+}
+
+html /deep/ [layout][wrap] {
+  -ms-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+html /deep/ [layout][wrap-reverse] {
+  -ms-flex-wrap: wrap-reverse;
+  -webkit-flex-wrap: wrap-reverse;
+  flex-wrap: wrap-reverse;
+}
+
+html /deep/ [flex] {
+  -ms-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+}
+
+html /deep/ [flex][auto] {
+  -ms-flex: 1 1 auto;
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+
+html /deep/ [flex][none] {
+  -ms-flex: none;
+  -webkit-flex: none;
+  flex: none;
+}
+
+html /deep/ [flex][one] {
+  -ms-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+}
+
+html /deep/ [flex][two] {
+  -ms-flex: 2;
+  -webkit-flex: 2;
+  flex: 2;
+}
+
+html /deep/ [flex][three] {
+  -ms-flex: 3;
+  -webkit-flex: 3;
+  flex: 3;
+}
+
+html /deep/ [flex][four] {
+  -ms-flex: 4;
+  -webkit-flex: 4;
+  flex: 4;
+}
+
+html /deep/ [flex][five] {
+  -ms-flex: 5;
+  -webkit-flex: 5;
+  flex: 5;
+}
+
+html /deep/ [flex][six] {
+  -ms-flex: 6;
+  -webkit-flex: 6;
+  flex: 6;
+}
+
+html /deep/ [flex][seven] {
+  -ms-flex: 7;
+  -webkit-flex: 7;
+  flex: 7;
+}
+
+html /deep/ [flex][eight] {
+  -ms-flex: 8;
+  -webkit-flex: 8;
+  flex: 8;
+}
+
+html /deep/ [flex][nine] {
+  -ms-flex: 9;
+  -webkit-flex: 9;
+  flex: 9;
+}
+
+html /deep/ [flex][ten] {
+  -ms-flex: 10;
+  -webkit-flex: 10;
+  flex: 10;
+}
+
+html /deep/ [flex][eleven] {
+  -ms-flex: 11;
+  -webkit-flex: 11;
+  flex: 11;
+}
+
+html /deep/ [flex][twelve] {
+  -ms-flex: 12;
+  -webkit-flex: 12;
+  flex: 12;
+}
+
+/* alignment in cross axis */
+
+html /deep/ [layout][start] {
+  -ms-flex-align: start;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+}
+
+html /deep/ [layout][center], html /deep/ [layout][center-center] {
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+html /deep/ [layout][end] {
+  -ms-flex-align: end;
+  -webkit-align-items: flex-end;
+  align-items: flex-end;
+}
+
+/* alignment in main axis */
+
+html /deep/ [layout][start-justified] {
+  -ms-flex-pack: start;
+  -webkit-justify-content: flex-start;
+  justify-content: flex-start;
+}
+
+html /deep/ [layout][center-justified], html /deep/ [layout][center-center] {
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+html /deep/ [layout][end-justified] {
+  -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+}
+
+html /deep/ [layout][around-justified] {
+  -ms-flex-pack: around;
+  -webkit-justify-content: space-around;
+  justify-content: space-around;
+}
+
+html /deep/ [layout][justified] {
+  -ms-flex-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+/* self alignment */
+
+html /deep/ [self-start] {
+  -ms-align-self: flex-start;
+  -webkit-align-self: flex-start;
+  align-self: flex-start;
+}
+
+html /deep/ [self-center] {
+  -ms-align-self: center;
+  -webkit-align-self: center;
+  align-self: center;
+}
+
+html /deep/ [self-end] {
+  -ms-align-self: flex-end;
+  -webkit-align-self: flex-end;
+  align-self: flex-end;
+}
+
+html /deep/ [self-stretch] {
+  -ms-align-self: stretch;
+  -webkit-align-self: stretch;
+  align-self: stretch;
+}
+
+/*******************************
+          Other Layout
+*******************************/
+
+html /deep/ [block] {
+  display: block;
+}
+
+/* ie support for hidden */
+html /deep/ [hidden] {
+  display: none !important;
+}
+
+html /deep/ [relative] {
+  position: relative;
+}
+
+html /deep/ [fit] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+body[fullbleed] {
+  margin: 0;
+  height: 100vh;
+}
+
+/*******************************
+            Other
+*******************************/
+
+html /deep/ [segment], html /deep/ segment {
+  display: block;
+  position: relative;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 1em 0.5em;
+  padding: 1em;
+  background-color: white;
+  -webkit-box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 5px 5px 5px 5px;
+}
+
+</style><script src="packages/polymer/src/js/polymer/polymer.js"></script><script>
+// TODO(sigmund): remove this script tag (dartbug.com/19650). This empty
+// script tag is necessary to work around a bug in Chrome 36.
+</script>
+<polymer-element name="pixel-canvas" attributes="verticalPixels horizontalPixels pixelSize noGridlines
+    gridlineColor gridlineWidth drawable drawingColor">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      canvas {
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        cursor: default;
+      }
+      canvas.grab {
+        cursor: pointer;
+        cursor: -moz-grab;
+        cursor: -webkit-grab;
+        cursor: grab;
+      }
+      canvas.grabbing {
+        cursor: move;
+        cursor: -moz-grabbing;
+        cursor: -webkit-grabbing;
+        cursor: grabbing;
+      }
+      canvas.selected {
+        cursor: crosshair;
+      }
+    </style>
+    <canvas width="{{horizontalPixels * pixelSize}}" height="{{verticalPixels * pixelSize}}"></canvas>
+  </template>
+  
+</polymer-element>
+
+
+
+
+
+
+
+
+
+
+<polymer-element name="color-palette-cell" attributes="color selected checkMark">
+  <template>
+    <style>:host {
+  display: inline-block;
+  width: 42px;
+  height: 42px;
+  box-sizing: border-box;
+  cursor: pointer;
+
+  color: #666;
+  -webkit-text-stroke: 1px #ddd;
+  -moz-text-stroke: 1px #ddd;
+  -ms-text-stroke: 1px #ddd;
+  text-stroke: 1px #ddd;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-family: mono;
+  font-weight: bolder;
+  font-size: 26px;
+  line-height: 1.3em;
+}
+.cell-border {
+  box-sizing: border-box;
+  border: 1px solid rgba(128, 128, 128, 0.5);
+  border-radius: 4px;
+  padding: 3px;
+  width: 100%;
+  height: 100%;
+}
+.cell-body {
+  box-sizing: border-box;
+  padding: 3px;
+  border-radius: 3px;
+  width: 100%;
+  height: 100%;
+  vertical-align: middle;
+  text-align: center;
+  box-shadow: none;
+}
+.cell-border:hover {
+  padding: 1px 5px 5px 1px;
+}
+.cell-border:active {
+  padding: 4px 2px 2px 4px;
+}
+.cell-border:hover > .cell-body {
+  box-shadow: 1px 1px 3px rgba(64,64,64,0.7);
+}
+.cell-border:active > .cell-body {
+  box-shadow: -1px -1px 1px rgba(64,64,64,0.7);
+}
+.cell-border[selected] {
+  padding: 0px;
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  cursor: default;
+}
+.cell-border[selected]:hover > .cell-body {
+  box-shadow: none;
+}
+.checkMark {
+  visibility: hidden;
+}
+[selected] .checkMark {
+  visibility: visible;
+}
+</style>
+    <div on-click="{{select}}" class="cell-border" title="{{title}}" selected?="{{selected}}">
+      <div class="cell-body" style="background-color: {{color}};">
+        <span class="checkMark">
+          {{checkMark}}
+        </span>
+      </div>
+    </div>
+  </template>
+  
+</polymer-element>
+<polymer-element name="color-palette">
+  <template>
+    <style>:host {
+  display: block;
+}
+</style>
+    <content></content>
+  </template>
+  
+</polymer-element>
+<polymer-element name="color8-palette">
+  <template>
+    <style>table {
+  text-align: center;
+  border: 1px solid rgba(196,196,196,0.4);
+  border-radius: 4px;
+}
+</style>
+    <color-palette>
+      <table>
+        <tbody>
+          <tr>
+            <td><color-palette-cell x-code="0"></color-palette-cell></td>
+            <td><color-palette-cell x-code="1"></color-palette-cell></td>
+            <td><color-palette-cell x-code="2"></color-palette-cell></td>
+            <td><color-palette-cell x-code="3"></color-palette-cell></td>
+          </tr>
+          <tr>
+            <td><color-palette-cell x-code="4"></color-palette-cell></td>
+            <td><color-palette-cell x-code="5"></color-palette-cell></td>
+            <td><color-palette-cell x-code="6"></color-palette-cell></td>
+            <td><color-palette-cell x-code="7"></color-palette-cell></td>
+          </tr>
+        </tbody>
+      </table>
+    </color-palette>
+  </template>
+  
+</polymer-element>
+
+
+
+<polymer-element name="color16-palette">
+  <template>
+    <style>table {
+  text-align: center;
+  border: 1px solid rgba(196,196,196,0.4);
+  border-radius: 4px;
+}
+</style>
+    <color-palette>
+      <table>
+        <tbody><tr>
+          <td><color-palette-cell x-code="0"></color-palette-cell></td>
+          <td><color-palette-cell x-code="1"></color-palette-cell></td>
+          <td><color-palette-cell x-code="2"></color-palette-cell></td>
+          <td><color-palette-cell x-code="3"></color-palette-cell></td>
+        </tr>
+        <tr>
+          <td><color-palette-cell x-code="4"></color-palette-cell></td>
+          <td><color-palette-cell x-code="5"></color-palette-cell></td>
+          <td><color-palette-cell x-code="6"></color-palette-cell></td>
+          <td><color-palette-cell x-code="7"></color-palette-cell></td>
+        </tr>
+        <tr>
+          <td><color-palette-cell x-code="8"></color-palette-cell></td>
+          <td><color-palette-cell x-code="9"></color-palette-cell></td>
+          <td><color-palette-cell x-code="10"></color-palette-cell></td>
+          <td><color-palette-cell x-code="11"></color-palette-cell></td>
+        </tr>
+        <tr>
+          <td><color-palette-cell x-code="12"></color-palette-cell></td>
+          <td><color-palette-cell x-code="13"></color-palette-cell></td>
+          <td><color-palette-cell x-code="14"></color-palette-cell></td>
+          <td><color-palette-cell x-code="15"></color-palette-cell></td>
+        </tr>
+      </tbody></table>
+    </color-palette>
+  </template>
+  
+</polymer-element>
+
+
+
+<polymer-element name="color256-palette">
+  <template>
+    <style>table {
+  text-align: center;
+  border: 1px solid rgba(196,196,196,0.4);
+  border-radius: 4px;
+}
+</style>
+    <style>
+      .range-cell > div {
+        display: -webkit-flex;
+        display: -moz-flex;
+        display: flex;
+        -webkit-align-items: center;
+        -moz-align-items: center;
+        align-items: center;
+        -webkit-justify-content: center;
+        -moz-justify-content: center;
+        justify-content: center;
+
+        height: 34px;
+      }
+      .rgb-factor {
+        box-sizing: border-box;
+        font-family: mono;
+        text-align: right;
+        width: 3.2em;
+        padding: 0px 3px;
+        color: #444;
+      }
+      .range-cell[disabled] .rgb-factor {
+        color: #aaa;
+      }
+      .rgb-border-wrapper, .grayscale-border-wrapper {
+        box-sizing: border-box;
+        border: 1px solid rgba(128, 128, 128, 0.2);
+        border-radius: 4px;
+        padding: 3px;
+        height: 100%;
+        width: 100%
+      }
+      .red-range-wrapper, .green-range-wrapper, .blue-range-wrapper, .grayscale-range-wrapper {
+        display: -webkit-flex;
+        display: -moz-flex;
+        display: flex;
+        -webkit-align-items: center;
+        -moz-align-items: center;
+        align-items: center;
+        -webkit-justify-content: center;
+        -moz-justify-content: center;
+        justify-content: center;
+
+        box-sizing: border-box;
+        padding: 0px 2px;
+        border-radius: 3px;
+        width: 100%;
+        height: 100%;
+      }
+      .red-range-wrapper {
+        background: -moz-linear-gradient(left, #111, red);
+        background: -webkit-linear-gradient(left, #111, red);
+        background: linear-gradient(left, #111, red);
+      }
+      .range-cell[disabled] .red-range-wrapper {
+        background: -moz-linear-gradient(left, #666, #966);
+        background: -webkit-linear-gradient(left, #666, #966);
+        background: linear-gradient(left, #666, #966);
+      }
+      .green-range-wrapper {
+        background: -moz-linear-gradient(left, #111, green);
+        background: -webkit-linear-gradient(left, #111, green);
+        background: linear-gradient(left, #111, green);
+      }
+      .range-cell[disabled] .green-range-wrapper {
+        background: -moz-linear-gradient(left, #666, #696);
+        background: -webkit-linear-gradient(left, #666, #696);
+        background: linear-gradient(left, #666, #696);
+      }
+      .blue-range-wrapper {
+        background: -moz-linear-gradient(left, #111, blue);
+        background: -webkit-linear-gradient(left, #111, blue);
+        background: linear-gradient(left, #111, blue);
+      }
+      .range-cell[disabled] .blue-range-wrapper {
+        background: -moz-linear-gradient(left, #666, #669);
+        background: -webkit-linear-gradient(left, #666, #669);
+        background: linear-gradient(left, #666, #669);
+      }
+      .red-range, .green-range, .blue-range, .grayscale-range {
+        display: block;
+        margin: 0px;
+        width: 97%;
+        height: 100%;
+      }
+      .grayscale-range-wrapper {
+        background: -moz-linear-gradient(left, black, white);
+        background: -webkit-linear-gradient(left, black, white);
+        background: linear-gradient(left, black, white);
+      }
+      .range-cell[disabled] .grayscale-range-wrapper {
+        background: -moz-linear-gradient(left, #666, #ccc);
+        background: -webkit-linear-gradient(left, #666, #ccc);
+        background: linear-gradient(left, #666, #ccc);
+      }
+    </style>
+    <color-palette>
+      <table>
+        <tbody class="standard-colors">
+          <tr>
+            <td><color-palette-cell x-code="0"></color-palette-cell></td>
+            <td><color-palette-cell x-code="1"></color-palette-cell></td>
+            <td><color-palette-cell x-code="2"></color-palette-cell></td>
+            <td><color-palette-cell x-code="3"></color-palette-cell></td>
+            <td><color-palette-cell x-code="4"></color-palette-cell></td>
+            <td><color-palette-cell x-code="5"></color-palette-cell></td>
+            <td><color-palette-cell x-code="6"></color-palette-cell></td>
+            <td><color-palette-cell x-code="7"></color-palette-cell></td>
+          </tr>
+          <tr>
+            <td><color-palette-cell x-code="8"></color-palette-cell></td>
+            <td><color-palette-cell x-code="9"></color-palette-cell></td>
+            <td><color-palette-cell x-code="10"></color-palette-cell></td>
+            <td><color-palette-cell x-code="11"></color-palette-cell></td>
+            <td><color-palette-cell x-code="12"></color-palette-cell></td>
+            <td><color-palette-cell x-code="13"></color-palette-cell></td>
+            <td><color-palette-cell x-code="14"></color-palette-cell></td>
+            <td><color-palette-cell x-code="15"></color-palette-cell></td>
+          </tr>
+        </tbody>
+        <tbody class="rgb-colors">
+          <tr>
+            <td>
+              <color-palette-cell x-code="{{rgbCode.code}}">
+              </color-palette-cell>
+            </td>
+            <td colspan="7" class="range-cell" disabled?="{{!rgbCell.selected}}">
+              <div>
+                <div class="rgb-factor">{{redFactor}}</div>
+                <div class="rgb-border-wrapper">
+                  <div class="red-range-wrapper">
+                    <input class="red-range" type="range" min="0" max="5" step="1" value="5" disabled?="{{!rgbCell.selected}}" list="rgb-range-data" on-input="{{notifyRedChange}}">
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="rgb-factor">{{greenFactor}}</div>
+                <div class="rgb-border-wrapper">
+                  <div class="green-range-wrapper">
+                    <input class="green-range" type="range" min="0" max="5" step="1" value="0" disabled?="{{!rgbCell.selected}}" list="rgb-range-data" on-input="{{notifyGreenChange}}">
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="rgb-factor">{{blueFactor}}</div>
+                <div class="rgb-border-wrapper">
+                  <div class="blue-range-wrapper">
+                    <input class="blue-range" type="range" min="0" max="5" step="1" value="4" disabled?="{{!rgbCell.selected}}" list="rgb-range-data" on-input="{{notifyBlueChange}}">
+                  </div>
+                </div>
+              </div>
+              <datalist id="rgb-range-data">
+                <option value="0"></option><option value="1"></option><option value="2">
+                </option><option value="3"></option><option value="4"></option><option value="5">
+              </option></datalist>
+            </td>
+          </tr>
+        </tbody>
+        <tbody class="grayscale-colors">
+          <tr>
+            <td>
+              <color-palette-cell x-code="{{grayscaleCode.code}}">
+              </color-palette-cell>
+            </td>
+            <td colspan="7" class="range-cell" disabled?="{{!grayscaleCell.selected}}">
+              <div>
+                <div class="grayscale-border-wrapper">
+                  <div class="grayscale-range-wrapper">
+                    <input class="grayscale-range" type="range" min="232" max="255" step="1" value="234" disabled?="{{!grayscaleCell.selected}}" on-input="{{notifyGrayScaleChange}}">
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </color-palette>
+  </template>
+  
+</polymer-element>
+<polymer-element name="ansi-color-palette" attributes="colorSpace">
+  <template>
+    <template if="{{colorSpace != '16' &amp;&amp; colorSpace != '256'}}">
+      <color8-palette></color8-palette>
+    </template>
+    <template if="{{colorSpace == '16'}}">
+      <color16-palette></color16-palette>
+    </template>
+    <template if="{{colorSpace == '256'}}">
+      <color256-palette></color256-palette>
+    </template>
+  </template>
+  
+</polymer-element>
+
+<polymer-element name="fold-button" attributes="target folding">
+  <template>
+    <style>
+      :host {
+        align-items: flex-start;
+        display: inline-block;
+        box-sizing: border-box;
+        cursor: pointer;
+      }
+      .hidden {
+        display: none;
+      }
+      button {
+        cursor: inherit;
+      }
+    </style>
+    <button>
+      <span class="hidden">
+        <template if="{{folding}}">
+          <content select="on-unfolding"></content>
+        </template>
+        <template if="{{!folding}}">
+          <content select="on-folding"></content>
+        </template>
+      </span>
+      <content></content>
+    </button>
+  </template>
+  
+</polymer-element>
+
+<polymer-element name="on-folding" noscript="">
+  <template><content></content></template>
+</polymer-element>
+
+<polymer-element name="on-unfolding" noscript="">
+  <template><content></content></template>
+</polymer-element>
+<polymer-element name="ansi-pixels" attributes="ansiTextServer">
+  <template>
+    <style>body {
+  background-image: url(bg.png);
+}
+header {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #ddd;
+  padding: 12px;
+  font-family: 'Press Start 2P', cursive;
+  border-radius: 3px;
+  margin: 12px 0px;
+}
+h1 {
+  font-weight: normal;
+}
+header > p {
+  font-size: 80%;
+}
+header a {
+  color: #66f;
+}
+input[type="checkbox"], button, label {
+  cursor: pointer;
+}
+button[disabled] {
+  cursor: default;
+}
+section {
+  margin: 12px;
+}
+#bgcolor-container {
+  padding: 12px;
+  border-radius: 3px;
+  position: relative;
+}
+#console {
+  white-space: nowrap;
+  margin-top: 30px;
+  margin-bottom: 0px;
+}
+#console > p {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: pointer;
+  margin: 0px;
+}
+#console code {
+  padding: 3px;
+}
+#console input[x-hide] {
+  display: none;
+}
+#console.selected > p {
+  text-overflow: clip;
+}
+#console .cmd {
+  width: 100%;
+  font-family: mono;
+  border: 1px inset transparent;
+  background-color: transparent;
+  cursor: pointer;
+  color: inherit;
+}
+#console .cmd:focus {
+  border: 1px inset black;
+  background-color: white;
+  cursor: text;
+  color: black;
+}
+#controller {
+  background-color: rgba(255, 255, 255, 0.6);
+  color: #333;
+  padding: 9px;
+  border-radius: 3px;
+  box-shadow: 3px 3px 1px #000;
+  border: 1px solid #666;
+  box-sizing: border-box;
+  position: absolute;
+  right: 0px; top: 60px;
+}
+#controller > section {
+  margin: 6px;
+}
+#controller h3 {
+  margin: 6px;
+}
+#controller ul {
+  margin: 3px;
+}
+#selection, #operation {
+  float: left;
+  padding: 0px 10px;
+}
+#nogrids-wrapper { clear: both; }
+#download > p {
+  margin: 10px 0px;
+  white-space: nowrap;
+}
+#share-link {
+  width: 180px;
+}
+#selection > ul, #operation > ul {
+  list-style-type: none;
+  padding: 0px;
+}
+#selection .or-ctrl-click {
+  display: inline-block;
+}
+ansi-color-palette {
+  mergin: 5px auto;
+}
+#canvas {
+  display: inline-block;
+  box-sizing: border-box;
+}
+#settings {
+  position: absolute;
+  background-color: rgba(247, 255, 255, 0.95);
+  top: 87px; bottom: 87px;
+  left: 87px; right: 87px;
+  padding: 27px;
+  box-shadow: 6px 6px 0px #000;
+  border-radius: 3px;
+  border: 2px solid #333;
+  box-sizing: border-box;
+}
+#settings > h2 {
+  margin-top: 0px;
+}
+th {
+  font-weight: normal;
+  text-align: right;
+}
+.flex-wrapper {
+  display: flex;
+  align-items: center;
+}
+.flex-wrapper > span, .flex-wrapper > input{
+  display: flex-item;
+}
+#fold-buttons {
+  position: absolute;
+  top: 0px; right: 0px;
+}
+</style>
+    <style>
+      #bgcolor-container {
+        background-color: {{bgColor}};
+      }
+      #console {
+        color: {{fgColor}};
+      }
+    </style>
+
+    <div id="bgcolor-container" on-mousedown="{{foldAll}}">
+
+      <section id="console">
+        <p title="Paste this into your command-line terminal">
+          <code>$ </code>
+          <input x-hide?="{{!commands['curl']}}" class="cmd" value="curl -s '{{ansiTextUrl}}'" on-focus="{{selectCommand}}" on-blur="{{updateAnsiTextUrl}}">
+          <input x-hide?="{{!commands['wget']}}" class="cmd" value="wget -q -O- '{{ansiTextUrl}}'" on-focus="{{selectCommand}}" on-blur="{{updateAnsiTextUrl}}">
+          <input x-hide?="{{!commands['script']}}" class="cmd" value="python {{pythonArgs}}" on-focus="{{selectCommand}}" on-blur="{{updatePythonArgs}}">
+        </p>
+      </section>
+
+      <section id="controller" on-mousedown="{{stopPropergation}}">
+        <section id="current-action">
+          <p>Current Action: {{currentActionName}}</p>
+        </section>
+        <section id="color-space">
+          Colors:
+          <select value="{{colorSpace}}">
+            <option>8</option>
+            <option>16</option>
+            <option>256</option>
+          </select>,
+          Code: {{drawingColorCode == null ? 'None' : drawingColorCode.code}}
+        </section>
+        <section id="palette">
+          <ansi-color-palette colorspace="{{colorSpace}}"></ansi-color-palette>
+          <button id="erase-colors" on-click="{{deselectColor}}" x-active?="{{drawingColorCode == null}}">
+            Erase Colors
+          </button>
+        </section>
+        <section id="selection">
+          <h3>Selection</h3>
+          <ul>
+            <li><button on-click="{{canvas.startSameColorsSelection}}">All same colors</button>
+            </li><li><button on-click="{{canvas.startSameColorNeiborsSelection}}">Same color neighbors</button>
+            </li><li><button on-click="{{canvas.startRectSelection}}">Rectangle</button>
+            </li><li><span class="or-ctrl-click">or <code>ctrl + left-click</code></span>
+          </li></ul>
+        </section>
+        <section id="operation">
+          <h3>Operation</h3>
+          <ul>
+            <li><button disabled?="{{!hasSelection}}" on-click="{{canvas.copySelection}}">Copy</button>
+            </li><li><button disabled?="{{!hasSelection}}" on-click="{{canvas.cutSelection}}">Cut</button>
+            </li><li><button disabled?="{{!hasSelection}}" on-click="{{canvas.fillSelection}}">Fill</button>
+            </li><li><button disabled?="{{!hasFloatLayer}}" on-click="{{canvas.pasteFloatLayer}}">Paste</button>
+            </li><li><button disabled?="{{!hasOutline}}" on-click="{{delete}}">Delete</button>
+          </li></ul>
+        </section>
+        <section id="nogrids-wrapper">
+          <p>
+            <input id="nogrids" type="checkbox" checked="{{nogrids}}">
+            <label for="nogrids">No grid-lines</label>
+          </p>
+        </section>
+        <section id="download">
+          <p id="share-link-wrapper">
+            <label for="share-link">Share link :</label>
+            <input id="share-link" value="{{shareLink}}" placeholder="Focus here" size="10" on-focus="{{selectShareLink}}" on-blur="{{updateShareLink}}">
+          </p>
+          <p>
+            <button id="download-as-png" title="Download as a .png image" on-click="{{downloadAsPng}}">Download as PNG</button>
+          </p>
+        </section>
+      </section>
+
+      <section id="canvas">
+        <pixel-canvas drawable="" horizontalpixels="{{hpixels}}" verticalpixels="{{vpixels}}" pixelsize="{{pixelSize}}" nogridlines="{{nogrids}}" gridlinecolor="{{gridColor}}"></pixel-canvas>
+      </section>
+
+      <section id="settings" on-mousedown="{{stopPropergation}}">
+        <h2>Settings</h2>
+        <table>
+          <tbody><tr>
+            <th>Horizontal Pixels:</th>
+            <td>
+              <div class="flex-wrapper">
+                <input id="hpixels" type="number" value="{{hpixelsSetting}}" min="4" max="256">
+                <input type="range" value="{{hpixelsSetting}}" min="4" max="256">
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>Vertical Pixels:</th>
+            <td>
+              <div class="flex-wrapper">
+                <input id="vpixels" type="number" value="{{vpixelsSetting}}" min="4" max="256">
+                <input type="range" value="{{vpixelsSetting}}" min="4" max="256">
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>Pixel Size:</th>
+            <td>
+              <div class="flex-wrapper">
+                <input type="number" value="{{pixelSizeSetting}}" min="10" max="50">
+                <input type="range" value="{{pixelSizeSetting}}" min="10" max="50">
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>Terminal FG Color:</th>
+            <td><input id="fg-color" type="text" value="{{fgColor}}" list="terminal-colors"></td>
+          </tr>
+          <tr>
+            <th>Terminal BG Color:</th>
+            <td><input id="bg-color" type="text" value="{{bgColor}}" list="terminal-colors"></td>
+          </tr>
+          <tr>
+            <th>Sample Command:</th>
+            <td>
+              <label><input type="radio" name="cmd" checked="{{commands['curl']}}">curl</label>
+              <label><input type="radio" name="cmd" checked="{{commands['wget']}}">wget</label>
+              <label><input type="radio" name="cmd" checked="{{commands['script']}}">script(required curl &amp; python)</label>
+            </td>
+          </tr>
+          <tr title="You can use the browser-back as 'undo' if you checked this.">
+            <th><label for="stacking-history">Stack into history:</label></th>
+            <td>
+              <input type="checkbox" checked="{{isStackingHistory}}" id="stacking-history">
+            </td>
+          </tr>
+        </tbody></table>
+      </section>
+
+      <section id="fold-buttons" on-mousedown="{{stopPropergation}}">
+        <fold-button target="#controller">
+          <on-folding>Open</on-folding>
+          <on-unfolding>Close</on-unfolding>
+          Tools
+        </fold-button>
+        <fold-button target="#settings" folding="">
+          <on-folding>Open</on-folding>
+          <on-unfolding>Close</on-unfolding>
+          Settings
+        </fold-button>
+      </section>
+
+      <datalist id="terminal-colors">
+        <option value="Black"></option>
+        <option value="RGBA(0, 0, 0, 0.8)"></option>
+        <option value="White"></option>
+        <option value="RGBA(255, 255, 255, 0.9)"></option>
+        <option value="Gray"></option>
+        <option value="RGBA(190, 190, 190, 0.8)"></option>
+      </datalist>
+
+    </div>
+  </template>
+  
+</polymer-element>
+
+    <header>
+      <h1>ANSI Pixels</h1>
+      <p>
+        An editor for pixel arts
+        (<a href="http://en.wikipedia.org/wiki/ANSI_art" title="ANSI art - Wikipedia, the free encyclopedia">ANSI art</a>)
+        in your terminal.
+      </p>
+    </header>
+    <ansi-pixels></ansi-pixels>
+    <a href="https://github.com/kui/ansi_pixels"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+  
+
+<script src="index.html_bootstrap.dart.js" async=""></script></body></html>

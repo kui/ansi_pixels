@@ -1,0 +1,14 @@
+<link rel="import" href="../../packages/polymer/polymer.html">
+<polymer-element name="color-palette-cell" attributes="color selected checkMark">
+  <template>
+    <link rel="stylesheet" href="color_palette_cell.css">
+    <div on-click="{{select}}" class="cell-border" title="{{title}}" selected?="{{selected}}">
+      <div class="cell-body" style="background-color: {{color}};">
+        <span class="checkMark">
+          {{checkMark}}
+        </span>
+      </div>
+    </div>
+  </template>
+  <script type="application/dart" src="color_palette_cell.dart"></script>
+</polymer-element>

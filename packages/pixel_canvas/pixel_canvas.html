@@ -1,0 +1,36 @@
+<link rel="import" href="../../packages/polymer/polymer.html">
+<polymer-element name="pixel-canvas"
+  attributes="verticalPixels horizontalPixels pixelSize noGridlines
+    gridlineColor gridlineWidth drawable drawingColor">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      canvas {
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        cursor: default;
+      }
+      canvas.grab {
+        cursor: pointer;
+        cursor: -moz-grab;
+        cursor: -webkit-grab;
+        cursor: grab;
+      }
+      canvas.grabbing {
+        cursor: move;
+        cursor: -moz-grabbing;
+        cursor: -webkit-grabbing;
+        cursor: grabbing;
+      }
+      canvas.selected {
+        cursor: crosshair;
+      }
+    </style>
+    <canvas width="{{horizontalPixels * pixelSize}}" height="{{verticalPixels * pixelSize}}"></canvas>
+  </template>
+  <script type="application/dart" src="pixel_canvas.dart"></script>
+</polymer-element>

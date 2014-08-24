@@ -1,0 +1,39 @@
+<link rel="import" href="../../packages/polymer/polymer.html">
+<polymer-element name="fold-button" attributes="target folding">
+  <template>
+    <style>
+      :host {
+        align-items: flex-start;
+        display: inline-block;
+        box-sizing: border-box;
+        cursor: pointer;
+      }
+      .hidden {
+        display: none;
+      }
+      button {
+        cursor: inherit;
+      }
+    </style>
+    <button>
+      <span class="hidden">
+        <template if="{{folding}}">
+          <content select="on-unfolding"></content>
+        </template>
+        <template if="{{!folding}}">
+          <content select="on-folding"></content>
+        </template>
+      </span>
+      <content></content>
+    </button>
+  </template>
+  <script type="application/dart" src="fold_button.dart"></script>
+</polymer-element>
+
+<polymer-element name="on-folding" noscript>
+  <template><content></content></template>
+</polymer-element>
+
+<polymer-element name="on-unfolding" noscript>
+  <template><content></content></template>
+</polymer-element>

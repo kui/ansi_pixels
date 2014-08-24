@@ -1,0 +1,143 @@
+body {
+  background-image: url("bg.png");
+}
+header {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #ddd;
+  padding: 12px;
+  font-family: 'Press Start 2P', cursive;
+  border-radius: 3px;
+  margin: 12px 0px;
+}
+h1 {
+  font-weight: normal;
+}
+header > p {
+  font-size: 80%;
+}
+header a {
+  color: #66f;
+}
+input[type="checkbox"], button, label {
+  cursor: pointer;
+}
+button[disabled] {
+  cursor: default;
+}
+section {
+  margin: 12px;
+}
+#bgcolor-container {
+  padding: 12px;
+  border-radius: 3px;
+  position: relative;
+}
+#console {
+  white-space: nowrap;
+  margin-top: 30px;
+  margin-bottom: 0px;
+}
+#console > p {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: pointer;
+  margin: 0px;
+}
+#console code {
+  padding: 3px;
+}
+#console input[x-hide] {
+  display: none;
+}
+#console.selected > p {
+  text-overflow: clip;
+}
+#console .cmd {
+  width: 100%;
+  font-family: mono;
+  border: 1px inset transparent;
+  background-color: transparent;
+  cursor: pointer;
+  color: inherit;
+}
+#console .cmd:focus {
+  border: 1px inset black;
+  background-color: white;
+  cursor: text;
+  color: black;
+}
+#controller {
+  background-color: rgba(255, 255, 255, 0.6);
+  color: #333;
+  padding: 9px;
+  border-radius: 3px;
+  box-shadow: 3px 3px 1px #000;
+  border: 1px solid #666;
+  box-sizing: border-box;
+  position: absolute;
+  right: 0px; top: 60px;
+}
+#controller > section {
+  margin: 6px;
+}
+#controller h3 {
+  margin: 6px;
+}
+#controller ul {
+  margin: 3px;
+}
+#selection, #operation {
+  float: left;
+  padding: 0px 10px;
+}
+#nogrids-wrapper { clear: both; }
+#download > p {
+  margin: 10px 0px;
+  white-space: nowrap;
+}
+#share-link {
+  width: 180px;
+}
+#selection > ul, #operation > ul {
+  list-style-type: none;
+  padding: 0px;
+}
+#selection .or-ctrl-click {
+  display: inline-block;
+}
+ansi-color-palette {
+  mergin: 5px auto;
+}
+#canvas {
+  display: inline-block;
+  box-sizing: border-box;
+}
+#settings {
+  position: absolute;
+  background-color: rgba(247, 255, 255, 0.95);
+  top: 87px; bottom: 87px;
+  left: 87px; right: 87px;
+  padding: 27px;
+  box-shadow: 6px 6px 0px #000;
+  border-radius: 3px;
+  border: 2px solid #333;
+  box-sizing: border-box;
+}
+#settings > h2 {
+  margin-top: 0px;
+}
+th {
+  font-weight: normal;
+  text-align: right;
+}
+.flex-wrapper {
+  display: flex;
+  align-items: center;
+}
+.flex-wrapper > span, .flex-wrapper > input{
+  display: flex-item;
+}
+#fold-buttons {
+  position: absolute;
+  top: 0px; right: 0px;
+}
