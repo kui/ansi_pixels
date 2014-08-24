@@ -24,7 +24,7 @@ class AnsiPixels {
         }
       });
   factory AnsiPixels.fromJson(List<List<int>> j) =>
-      new AnsiPixels.generate(j.length, j.first.length, (int x, int y) {
+      new AnsiPixels.generate(j.first.length, j.length, (int x, int y) {
         try {
           final row = j[y];
           return row[x];

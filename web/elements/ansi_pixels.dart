@@ -20,10 +20,8 @@ class AnsiPixelsElement extends PolymerElement {
   static final Rgba BASE_BG_COLOR = new Rgba(240, 240, 240, 255);
   static final ZIPPED_JSON_UPDATE_DELAY = new Duration(seconds: 5);
   static final SCRIPT_URL = 'https://gist.githubusercontent.com/kui/1ad5065b2d5ea323c7ba/raw/ap.py';
-
-  @published
-  String get ansiTextServer => readValue(#ansiTextServer, () => 'http://ansipixels.k-ui.jp/%s');
-  set ansiTextServer(String s) { writeValue(#ansiTextServer, s); }
+  static final SHARE_LINK = 'http://ansipixels.k-ui.jp/%s.html';
+  static final ANSI_TEXT_URL = 'http://ansipixels.k-ui.jp/%s';
 
   // settings
   @published
@@ -184,7 +182,8 @@ class AnsiPixelsElement extends PolymerElement {
     hpixelsSetting = pixels.first.length.toString();
 
     async((_) {
-      new AnsiPixels.fromJson(pixels).forEach((x, y, code) {
+      final p = new AnsiPixels.fromJson(pixels);
+      p.forEach((x, y, code) {
         final String color = (code == null) ? null : getColorFromAnsiCode(code);
         canvas.setColor(x, y, color);
       });
@@ -216,10 +215,6 @@ class AnsiPixelsElement extends PolymerElement {
     canvas.onPixelColorChange.listen((_) {
       _delayUpdateZipped();
     });
-  }
-
-  ansiTextServerChanged() {
-    _delayUpdateZipped();
   }
 
   hpixelsSettingChanged(String old) {
@@ -309,15 +304,11 @@ class AnsiPixelsElement extends PolymerElement {
   }
 
   void _updateAnsiTextUrl() {
-    ansiTextUrl = ansiTextServer.replaceFirst('%s', zippedJson);
+    ansiTextUrl = ANSI_TEXT_URL.replaceFirst('%s', zippedJson);
   }
 
   void _updateShareLink() {
-    final uri = Uri.parse(window.location.href);
-    final newUri = new Uri(fragment: zippedJson, query: uri.query,
-        host: uri.host, path: uri.path, port: uri.port, scheme: uri.scheme,
-        userInfo: uri.userInfo);
-    shareLink = newUri.toString();
+    shareLink = SHARE_LINK.replaceFirst('%s', zippedJson);
   }
 
   void _updateHistory() {

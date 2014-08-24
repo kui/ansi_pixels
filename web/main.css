@@ -1,7 +1,7 @@
 body {
   background-image: url("bg.png");
 }
-header {
+header, footer {
   background-color: rgba(0, 0, 0, 0.8);
   color: #ddd;
   padding: 12px;
@@ -12,7 +12,7 @@ header {
 h1 {
   font-weight: normal;
 }
-header > p {
+header > p, footer > p {
   font-size: 80%;
 }
 a {
