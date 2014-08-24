@@ -15,7 +15,7 @@ h1 {
 header > p {
   font-size: 80%;
 }
-header a {
+a {
   color: #66f;
 }
 input[type="checkbox"], button, label {
