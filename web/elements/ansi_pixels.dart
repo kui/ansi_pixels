@@ -86,6 +86,7 @@ class AnsiPixelsElement extends PolymerElement {
   @observable bool isStackingHistory = false;
 
   Timer zippedJsonUpdater;
+  Function afterRendered;
 
   PixelCanvasElement get canvas => shadowRoot.querySelector('pixel-canvas');
   AnsiColorPaletteElement get _palette =>
@@ -107,11 +108,9 @@ class AnsiPixelsElement extends PolymerElement {
   @override
   attached() {
     super.attached();
-    _initController();
+    _initCallbacks();
     _asyncUpdateContainterSize();
-
     _startUrlFragmentObsevation();
-
     async((_) { _updateZipped();});
     _initLocalStorageProps();
   }
@@ -172,7 +171,8 @@ class AnsiPixelsElement extends PolymerElement {
     _loadPixels(j['pixels']);
 
     if (!updateZippedJson)
-      new Timer(new Duration(milliseconds: 800), () => _clearZippedJsonUpdater());
+      // canncel zippedJson update because the browser history go forward
+      new Timer(new Duration(milliseconds: 1000), () => _clearZippedJsonUpdater());
   }
 
   void _loadPixels(List<List<int>> pixels) {
@@ -181,16 +181,16 @@ class AnsiPixelsElement extends PolymerElement {
     vpixelsSetting = pixels.length.toString();
     hpixelsSetting = pixels.first.length.toString();
 
-    async((_) {
-      final p = new AnsiPixels.fromJson(pixels);
-      p.forEach((x, y, code) {
+    afterRendered = () {
+      new AnsiPixels.fromJson(pixels).forEach((x, y, code) {
         final String color = (code == null) ? null : getColorFromAnsiCode(code);
         canvas.setColor(x, y, color);
       });
-    });
+      afterRendered = null;
+    };
   }
 
-  void _initController() {
+  void _initCallbacks() {
     canvas.drawingColor = getColorFromAnsiCode(0);
     _palette.selectByCodeInt(0);
 
@@ -214,6 +214,10 @@ class AnsiPixelsElement extends PolymerElement {
 
     canvas.onPixelColorChange.listen((_) {
       _delayUpdateZipped();
+    });
+    canvas.onAfterRendering.listen((_) {
+      if (afterRendered == null) return;
+      afterRendered();
     });
   }
 
