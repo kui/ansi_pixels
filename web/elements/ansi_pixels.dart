@@ -168,14 +168,11 @@ class AnsiPixelsElement extends PolymerElement {
     fgColor = j['fgColor'];
     colorSpace = j['colorSpace'];
     nogrids = j['nogrids'];
-    _loadPixels(j['pixels']);
-
-    if (!updateZippedJson)
-      // canncel zippedJson update because the browser history go forward
-      new Timer(new Duration(milliseconds: 1000), () => _clearZippedJsonUpdater());
+    _loadPixels(j['pixels'], updateZippedJson);
+    canvas.render();
   }
 
-  void _loadPixels(List<List<int>> pixels) {
+  void _loadPixels(List<List<int>> pixels, bool updateZippedJson) {
     if (pixels == null || pixels.isEmpty) return;
 
     vpixelsSetting = pixels.length.toString();
@@ -187,6 +184,9 @@ class AnsiPixelsElement extends PolymerElement {
         canvas.setColor(x, y, color);
       });
       afterRendered = null;
+      if (!updateZippedJson)
+        // canncel zippedJson update because the browser history go forward
+        new Timer(new Duration(milliseconds: 1000), () => _clearZippedJsonUpdater());
     };
   }
 
