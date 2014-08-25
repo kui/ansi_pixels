@@ -97,6 +97,10 @@ class AnsiPixelsElement extends PolymerElement {
   FoldButtonElement get _controllerFoldButton =>
       shadowRoot.querySelector('fold-button[target="#controller"]');
   Element get _container => shadowRoot.querySelector('#bgcolor-container');
+  ElementList get _bgColorTarget =>
+      shadowRoot.querySelectorAll('#bgcolor-container');
+  ElementList get _fgColorTarget =>
+      shadowRoot.querySelectorAll('#console,#samples');
 
   AnsiPixelsElement.created() : super.created();
 
@@ -108,6 +112,8 @@ class AnsiPixelsElement extends PolymerElement {
   @override
   attached() {
     super.attached();
+    fgColorChanged();
+    bgColorChanged();
     _initCallbacks();
     _asyncUpdateContainterSize();
     _startUrlFragmentObsevation();
@@ -252,7 +258,16 @@ class AnsiPixelsElement extends PolymerElement {
     _delayUpdateZipped();
   }
 
+  fgColorChanged() {
+    _fgColorTarget.forEach((Element e) => e.style.color = fgColor);
+  }
+
   bgColorChanged() {
+    _bgColorTarget.forEach((Element e) => e.style.backgroundColor = bgColor);
+    _changeGridColor();
+  }
+
+  void _changeGridColor() {
     final bg = new Rgba.fromColorString(bgColor);
     final r = BASE_BG_COLOR.putColor(bg);
     final newColor = r.chooseColor([LIGHT_GRID_COLOR, DARK_GRID_COLOR]);
