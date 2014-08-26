@@ -15,13 +15,13 @@ import 'package:ansi_color_palette/ansi_color_code.dart';
 class AnsiPixelsElement extends PolymerElement {
   static const int DEFAULT_PIXELS = 16;
   static const int DEFAULT_PIXEL_SIZE = 25;
+  static const ZIPPED_JSON_UPDATE_DELAY = const Duration(seconds: 1);
+  static const SCRIPT_URL = 'https://raw.githubusercontent.com/kui/ansi_pixels/master/tool/ansi-pixels.py';
+  static const SHARE_LINK = 'http://ansipixels.k-ui.jp/%s.html';
+  static const ANSI_TEXT_URL = 'http://ansipixels.k-ui.jp/%s';
   static final Rgba LIGHT_GRID_COLOR = new Rgba(255, 255, 255, 127);
   static final Rgba DARK_GRID_COLOR = new Rgba(0, 0, 0, 127);
   static final Rgba BASE_BG_COLOR = new Rgba(240, 240, 240, 255);
-  static final ZIPPED_JSON_UPDATE_DELAY = new Duration(seconds: 5);
-  static final SCRIPT_URL = 'https://raw.githubusercontent.com/kui/ansi_pixels/master/tool/ansi-pixels.py';
-  static final SHARE_LINK = 'http://ansipixels.k-ui.jp/%s.html';
-  static final ANSI_TEXT_URL = 'http://ansipixels.k-ui.jp/%s';
 
   // settings
   @published
@@ -183,6 +183,9 @@ class AnsiPixelsElement extends PolymerElement {
 
     vpixelsSetting = pixels.length.toString();
     hpixelsSetting = pixels.first.length.toString();
+    canvas.pixels.eachColorWithIndex((color, x, y) {
+      canvas.setColor(x, y, null);
+    });
 
     afterRendered = () {
       new AnsiPixels.fromJson(pixels).forEach((x, y, code) {
@@ -192,7 +195,7 @@ class AnsiPixelsElement extends PolymerElement {
       afterRendered = null;
       if (!updateZippedJson)
         // canncel zippedJson update because the browser history go forward
-        new Timer(new Duration(milliseconds: 1000), () => _clearZippedJsonUpdater());
+        new Timer(new Duration(milliseconds: 800), () => _clearZippedJsonUpdater());
     };
   }
 
@@ -302,16 +305,14 @@ class AnsiPixelsElement extends PolymerElement {
       ..height = '${boundingBox.height}px';
   }
 
-  void _delayUpdateZipped([Duration delay]) {
-    if (zippedJsonUpdater != null) return;
-
-    if (delay == null) delay =  ZIPPED_JSON_UPDATE_DELAY;
-    zippedJsonUpdater = new Timer(delay, () {
+  void _delayUpdateZipped() {
+    _clearZippedJsonUpdater();
+    zippedJsonUpdater = new Timer(ZIPPED_JSON_UPDATE_DELAY, () {
       _updateZipped();
     });
   }
 
-  void _updateZipped() {
+  void _updateZipped(){
     zippedJson = toZippedJson();
     _clearZippedJsonUpdater();
   }
@@ -351,17 +352,6 @@ class AnsiPixelsElement extends PolymerElement {
     _palette.selectedCell = null;
   }
 
-  void selectShareLink(FocusEvent e, _, Element target) {
-    _updateZipped();
-
-    if (target is! InputElement) return;
-    async((_) {
-      InputElement input = target;
-      input.setSelectionRange(0, input.value.length);
-    });
-  }
-  void updateShareLink() { async((_) => _updateShareLink()); }
-
   void downloadAsPng() => canvas.downloadAs('ansi-pixels.png');
 
   void foldAll(MouseEvent e) {
@@ -381,18 +371,16 @@ class AnsiPixelsElement extends PolymerElement {
     }
   }
 
-  void selectCommand(Event e, _, Element target) {
+  void selectInputAllText(Event e, _, Element target) {
     _updateZipped();
 
-    if (target is! InputElement) return;
-    async((_) {
-      InputElement input = target;
-      input.setSelectionRange(0, input.value.length);
-    });
+    InputElement input = target;
+    f(_) {
+      input.setSelectionRange(0, input.value.length, 'backward');
+      if (target.parent.querySelector(':focus') == target) async(f);
+    }
+    async(f);
   }
-  void updateAnsiTextUrl() { async((_) => _updateAnsiTextUrl()); }
-  void updatePythonArgs() { async((_) => _updatePythonArgs()); }
-
   void _autoFoldController() {
     if (_isOverlapping(_controller, canvas)) {
       _controllerFoldButton.fold();

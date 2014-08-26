@@ -38,9 +38,7 @@ section {
   margin-bottom: 0px;
 }
 #console > p {
-  text-overflow: ellipsis;
   overflow: hidden;
-  cursor: pointer;
   margin: 0px;
 }
 #console code {
@@ -54,11 +52,12 @@ section {
 }
 #console .cmd {
   width: 100%;
-  font-family: mono;
+  font-family: monospace;
   border: 1px inset transparent;
   background-color: transparent;
   cursor: pointer;
   color: inherit;
+  overflow: hidden;
 }
 #console .cmd:focus {
   border: 1px inset black;
