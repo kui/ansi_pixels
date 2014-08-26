@@ -1060,25 +1060,31 @@ th {
       </section>
 
       <section id="controller" on-mousedown="{{stopPropergation}}">
+        <section id="current-action">
+          Action: {{currentActionName}}
+        </section>
         <section id="color-space">
           Colors:
-          <select value="{{colorSpace}}">
-            <option>8</option>
-            <option>16</option>
-            <option>256</option>
-          </select>,
-          Code: {{drawingColorCode == null ? 'None' : drawingColorCode.code}}
+          <label>
+            <input name="colors" type="radio" value="8" on-change="{{changeColorSpace}}" checked?="{{colorSpace == '8'}}">8
+          </label>
+          <label>
+            <input name="colors" type="radio" value="16" on-change="{{changeColorSpace}}" checked?="{{colorSpace == '16'}}">16
+          </label>
+          <label>
+            <input name="colors" type="radio" value="256" on-change="{{changeColorSpace}}" checked?="{{colorSpace == '256'}}">256
+          </label>
         </section>
         <section id="palette">
           <ansi-color-palette colorspace="{{colorSpace}}"></ansi-color-palette>
           <button id="erase-colors" on-click="{{deselectColor}}" x-active?="{{drawingColorCode == null}}">
-            Erase Colors
+            Erase
           </button>
         </section>
         <section id="selection">
           <h3>Selection</h3>
           <ul>
-            <li><button on-click="{{canvas.startSameColorsSelection}}">All same colors</button>
+            <li><button on-click="{{canvas.startSameColorsSelection}}">Same color all</button>
             </li><li><button on-click="{{canvas.startSameColorNeiborsSelection}}">Same color neighbors</button>
             </li><li><button on-click="{{canvas.startRectSelection}}">Rectangle</button>
             </li><li><span class="or-ctrl-click">or <code>ctrl + left-click</code></span>
