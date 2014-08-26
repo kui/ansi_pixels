@@ -65,9 +65,7 @@ section {
   margin-bottom: 0px;
 }
 #console > p {
-  text-overflow: ellipsis;
   overflow: hidden;
-  cursor: pointer;
   margin: 0px;
 }
 #console code {
@@ -81,11 +79,12 @@ section {
 }
 #console .cmd {
   width: 100%;
-  font-family: mono;
+  font-family: monospace;
   border: 1px inset transparent;
   background-color: transparent;
   cursor: pointer;
   color: inherit;
+  overflow: hidden;
 }
 #console .cmd:focus {
   border: 1px inset black;
@@ -945,9 +944,7 @@ section {
   margin-bottom: 0px;
 }
 #console > p {
-  text-overflow: ellipsis;
   overflow: hidden;
-  cursor: pointer;
   margin: 0px;
 }
 #console code {
@@ -961,11 +958,12 @@ section {
 }
 #console .cmd {
   width: 100%;
-  font-family: mono;
+  font-family: monospace;
   border: 1px inset transparent;
   background-color: transparent;
   cursor: pointer;
   color: inherit;
+  overflow: hidden;
 }
 #console .cmd:focus {
   border: 1px inset black;
@@ -1049,23 +1047,15 @@ th {
   top: 0px; right: 0px;
 }
 </style>
-    <style>
-      #bgcolor-container {
-        background-color: {{bgColor}};
-      }
-      #console, #samples {
-        color: {{fgColor}};
-      }
-    </style>
 
     <div id="bgcolor-container" on-mousedown="{{foldAll}}">
 
       <section id="console">
         <p title="Paste this into your command-line terminal">
           <code>$ </code>
-          <input x-hide?="{{!commands['curl']}}" class="cmd" value="curl -s '{{ansiTextUrl}}'" on-focus="{{selectCommand}}" on-blur="{{updateAnsiTextUrl}}">
-          <input x-hide?="{{!commands['wget']}}" class="cmd" value="wget -q -O- '{{ansiTextUrl}}'" on-focus="{{selectCommand}}" on-blur="{{updateAnsiTextUrl}}">
-          <input x-hide?="{{!commands['script']}}" class="cmd" value="python {{pythonArgs}}" on-focus="{{selectCommand}}" on-blur="{{updatePythonArgs}}">
+          <input x-hide?="{{!commands['curl']}}" class="cmd" value="curl -s '{{ansiTextUrl}}'" on-focus="{{selectInputAllText}}" readonly="">
+          <input x-hide?="{{!commands['wget']}}" class="cmd" value="wget -q -O- '{{ansiTextUrl}}'" on-focus="{{selectInputAllText}}" readonly="">
+          <input x-hide?="{{!commands['script']}}" class="cmd" value="python {{pythonArgs}}" on-focus="{{selectInputAllText}}" readonly="">
         </p>
       </section>
 
@@ -1113,7 +1103,7 @@ th {
         <section id="download">
           <p id="share-link-wrapper">
             <label for="share-link">Share link :</label>
-            <input id="share-link" value="{{shareLink}}" placeholder="Focus here" size="10" on-focus="{{selectShareLink}}" on-blur="{{updateShareLink}}">
+            <input id="share-link" value="{{shareLink}}" placeholder="Focus here" size="10" on-focus="{{selectInputAllText}}" readonly="">
           </p>
           <p>
             <button id="download-as-png" title="Download as a .png image" on-click="{{downloadAsPng}}">Download as PNG</button>
