@@ -36,7 +36,7 @@ class AnsiPixels {
   int getCode(int x, int y) => _pixels[y][x];
   setCode(int x, int y, int code) { _pixels[y][x] = code; }
   setCodeByColor(int x, int y, String color) {
-    setCode(x, y, AnsiColorCode.getCode(color));
+    setCode(x, y, getAnsiCodeFromColor(color));
   }
 
   void forEach(void f(int x, int y, int code)) =>

@@ -19,9 +19,9 @@ class AnsiPixelsElement extends PolymerElement {
   static const SCRIPT_URL = 'https://raw.githubusercontent.com/kui/ansi_pixels/master/tool/ansi-pixels.py';
   static const SHARE_LINK = 'http://ansipixels.k-ui.jp/%s.html';
   static const ANSI_TEXT_URL = 'http://ansipixels.k-ui.jp/%s';
-  static final Rgba LIGHT_GRID_COLOR = new Rgba(255, 255, 255, 127);
-  static final Rgba DARK_GRID_COLOR = new Rgba(0, 0, 0, 127);
-  static final Rgba BASE_BG_COLOR = new Rgba(240, 240, 240, 255);
+  static final Rgba lightGridColor = new Rgba(255, 255, 255, 127);
+  static final Rgba darkGridColor = new Rgba(0, 0, 0, 127);
+  static final Rgba baseBgColor = new Rgba(240, 240, 240, 255);
 
   // settings
   @published
@@ -76,7 +76,7 @@ class AnsiPixelsElement extends PolymerElement {
   String get currentActionName =>
       canvas == null ? null : _getCurrentActionName(canvas.currentAction);
 
-  @observable String gridColor = LIGHT_GRID_COLOR.toColorString();
+  @observable String gridColor = lightGridColor.toColorString();
   @observable String ansiTextUrl;
   @observable String shareLink;
   @observable ObservableMap commands = toObservable({
@@ -272,8 +272,8 @@ class AnsiPixelsElement extends PolymerElement {
 
   void _changeGridColor() {
     final bg = new Rgba.fromColorString(bgColor);
-    final r = BASE_BG_COLOR.putColor(bg);
-    final newColor = r.chooseColor([LIGHT_GRID_COLOR, DARK_GRID_COLOR]);
+    final r = baseBgColor.putColor(bg);
+    final newColor = r.chooseColor([lightGridColor, darkGridColor]);
     if (newColor != null) gridColor = newColor.toColorString();
   }
 
