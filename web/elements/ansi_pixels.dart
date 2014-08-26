@@ -93,9 +93,6 @@ class AnsiPixelsElement extends PolymerElement {
       shadowRoot.querySelector('ansi-color-palette');
   FoldButtonElement get _settingFoldButton =>
       shadowRoot.querySelector('fold-button[target="#settings"]');
-  Element get _controller => shadowRoot.querySelector('#controller');
-  FoldButtonElement get _controllerFoldButton =>
-      shadowRoot.querySelector('fold-button[target="#controller"]');
   Element get _container => shadowRoot.querySelector('#bgcolor-container');
   ElementList get _bgColorTarget =>
       shadowRoot.querySelectorAll('#bgcolor-container');
@@ -115,7 +112,6 @@ class AnsiPixelsElement extends PolymerElement {
     fgColorChanged();
     bgColorChanged();
     _initCallbacks();
-    _asyncUpdateContainterSize();
     _startUrlFragmentObsevation();
     async((_) { _updateZipped();});
     _initLocalStorageProps();
@@ -252,18 +248,15 @@ class AnsiPixelsElement extends PolymerElement {
 
   hpixelsSettingChanged(String old) {
     notifyPropertyChange(#hpixels, _parsePixels(old), hpixels);
-    _asyncUpdateContainterSize();
     _delayUpdateZipped();
   }
   vpixelsSettingChanged(String old) {
     notifyPropertyChange(#vpixels, _parsePixels(old), vpixels);
-    _asyncUpdateContainterSize();
     _delayUpdateZipped();
   }
 
   pixelSizeSettingChanged(String old) {
     notifyPropertyChange(#pixelSize, _parsePixelSize(old), pixelSize);
-    _asyncUpdateContainterSize();
     _delayUpdateZipped();
   }
 
@@ -277,7 +270,6 @@ class AnsiPixelsElement extends PolymerElement {
   }
 
   colorSpaceChanged() {
-    _asyncUpdateContainterSize();
     _delayUpdateZipped();
   }
 
@@ -306,23 +298,6 @@ class AnsiPixelsElement extends PolymerElement {
 
   void _updatePythonArgs() {
     pythonArgs = '-c "\$(curl -s $SCRIPT_URL)" "$zippedJson"';
-  }
-
-  _asyncUpdateContainterSize() =>
-      async((_) => _updateContainterSize());
-
-  _updateContainterSize() {
-    final container = _container;
-    final baseRect = container.getBoundingClientRect();
-    final Rectangle boundingBox = container.children
-      .map((child) => child.getBoundingClientRect())
-      .where((Rectangle r) => r.width != 0 && r.height != 0)
-      .fold(
-          new Rectangle(baseRect.left, baseRect.top, 0, 0),
-          (Rectangle prev, rect) => prev.boundingBox(rect));
-
-    container.style
-      ..height = '${boundingBox.height}px';
   }
 
   void _delayUpdateZipped() {
@@ -380,7 +355,6 @@ class AnsiPixelsElement extends PolymerElement {
 
   void foldAll(MouseEvent e) {
     _settingFoldButton.fold();
-    _autoFoldController();
   }
 
   void stopPropergation(MouseEvent e) => e.stopPropagation();
@@ -408,17 +382,6 @@ class AnsiPixelsElement extends PolymerElement {
       }
     }
     window.requestAnimationFrame(f);
-  }
-  void _autoFoldController() {
-    if (_isOverlapping(_controller, canvas)) {
-      _controllerFoldButton.fold();
-    }
-  }
-
-  bool _isOverlapping(Element e1, Element e2) {
-    final r1 = e1.getBoundingClientRect();
-    final r2 = e2.getBoundingClientRect();
-    return r1.intersects(r2);
   }
 
   int _parsePixels(String s) => _parseInt(s, DEFAULT_PIXELS);
