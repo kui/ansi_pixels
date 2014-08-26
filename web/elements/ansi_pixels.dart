@@ -153,6 +153,7 @@ class AnsiPixelsElement extends PolymerElement {
 
     final zipped = (hash.startsWith('#')) ? hash.substring(1) : hash;
     if (zipped.isEmpty) return;
+    if (zipped == zippedJson) return;
 
     print('load from the URL fragment');
     _loadZippedJson(zipped, updateZippedJson);
@@ -172,6 +173,11 @@ class AnsiPixelsElement extends PolymerElement {
     nogrids = j['nogrids'];
     _loadPixels(j['pixels'], updateZippedJson);
     canvas.render();
+
+    zippedJson = zipped;
+    _updateAnsiTextUrl();
+    _updateShareLink();
+    _updatePythonArgs();
   }
 
   void _loadPixels(List<List<int>> pixels, bool updateZippedJson) {
@@ -289,17 +295,6 @@ class AnsiPixelsElement extends PolymerElement {
     if (newColor != null) gridColor = newColor.toColorString();
   }
 
-  zippedJsonChanged(String old) {
-    _updateAnsiTextUrl();
-    _updateShareLink();
-    _updatePythonArgs();
-    _updateHistory();
-  }
-
-  void _updatePythonArgs() {
-    pythonArgs = '-c "\$(curl -s $SCRIPT_URL)" "$zippedJson"';
-  }
-
   void _delayUpdateZipped() {
     _clearZippedJsonUpdater();
     zippedJsonUpdater = new Timer(ZIPPED_JSON_UPDATE_DELAY, () {
@@ -308,8 +303,17 @@ class AnsiPixelsElement extends PolymerElement {
   }
 
   void _updateZipped(){
-    zippedJson = toZippedJson();
     _clearZippedJsonUpdater();
+
+    final newZippedJson = toZippedJson();
+    if (newZippedJson == null) return;
+    if (newZippedJson == zippedJson) return;
+
+    zippedJson = newZippedJson;
+    _updateAnsiTextUrl();
+    _updateShareLink();
+    _updatePythonArgs();
+    _updateHistory();
   }
 
   void _clearZippedJsonUpdater() {
@@ -324,6 +328,10 @@ class AnsiPixelsElement extends PolymerElement {
 
   void _updateShareLink() {
     shareLink = SHARE_LINK.replaceFirst('%s', zippedJson);
+  }
+
+  void _updatePythonArgs() {
+    pythonArgs = '-c "\$(curl -s $SCRIPT_URL)" "$zippedJson"';
   }
 
   void _updateHistory() {
@@ -373,15 +381,7 @@ class AnsiPixelsElement extends PolymerElement {
     _updateZipped();
 
     InputElement input = target;
-    f(_) {
-      if (input.parent.querySelector(':focus') == input) {
-        input.setSelectionRange(0, input.value.length, 'backward');
-        window.requestAnimationFrame(f);
-      } else {
-        input.setSelectionRange(0, 0);
-      }
-    }
-    window.requestAnimationFrame(f);
+    async((_) => input.setSelectionRange(0, input.value.length, 'backward'));
   }
 
   int _parsePixels(String s) => _parseInt(s, DEFAULT_PIXELS);

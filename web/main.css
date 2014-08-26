@@ -67,11 +67,12 @@ button[disabled] {
   display: flex;
 }
 #first-column {
+  margin: 0px 6px;
+
   -webkit-order: 2;
   order: 2;
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
-  margin: 0px 6px;
 }
 #second-column {
   -webkit-order: 1;
