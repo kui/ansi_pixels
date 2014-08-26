@@ -400,10 +400,14 @@ class AnsiPixelsElement extends PolymerElement {
 
     InputElement input = target;
     f(_) {
-      input.setSelectionRange(0, input.value.length, 'backward');
-      if (target.parent.querySelector(':focus') == target) async(f);
+      if (input.parent.querySelector(':focus') == input) {
+        input.setSelectionRange(0, input.value.length, 'backward');
+        window.requestAnimationFrame(f);
+      } else {
+        input.setSelectionRange(0, 0);
+      }
     }
-    async(f);
+    window.requestAnimationFrame(f);
   }
   void _autoFoldController() {
     if (_isOverlapping(_controller, canvas)) {
