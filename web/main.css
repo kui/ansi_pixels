@@ -125,6 +125,9 @@ ansi-color-palette {
   width: 100%;
   overflow-x: auto;
 }
+#samples li {
+  margin: 3px 0px;
+}
 #settings {
   position: absolute;
   background-color: rgba(247, 255, 255, 0.95);
