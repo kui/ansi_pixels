@@ -51,6 +51,9 @@ class AnsiPixelsElement extends PolymerElement {
   @published
   String get zippedJson => readValue(#zippedJson);
   set zippedJson(String s) => writeValue(#zippedJson, s);
+  @published
+  String get currentActionName => readValue(#currentActionName);
+  set currentActionName(String s) => writeValue(#currentActionName, s);
 
   @reflectable
   int get hpixels => _parsePixels(hpixelsSetting);
@@ -72,9 +75,6 @@ class AnsiPixelsElement extends PolymerElement {
       canvas != null && _haveFloatLayer(canvas.currentAction);
   @reflectable
   bool get hasOutline => hasSelection || hasFloatLayer;
-  @reflectable
-  String get currentActionName =>
-      canvas == null ? null : _getCurrentActionName(canvas.currentAction);
 
   @observable String gridColor = lightGridColor.toColorString();
   @observable String ansiTextUrl;
@@ -207,6 +207,7 @@ class AnsiPixelsElement extends PolymerElement {
       canvas.currentAction = null;
       canvas.drawingColor = e.newColor;
       notifyPropertyChange(#drawingColorCode, e.oldCode, e.newCode);
+      currentActionName = _getCurrentActionName(canvas.currentAction);
     });
     canvas.onActionChange.listen((e) {
       final oldHasSelection = _haveSelection(e.oldAction);
@@ -216,10 +217,9 @@ class AnsiPixelsElement extends PolymerElement {
       notifyPropertyChange(#hasOutline, oldHasSelection || oldHasFloatLayer,
           hasOutline);
 
-      final oldActionName = _getCurrentActionName(e.oldAction);
-      notifyPropertyChange(#currentActionName, oldActionName, currentActionName);
+      currentActionName = _getCurrentActionName(e.newAction);
     });
-    notifyPropertyChange(#currentActionName, null, currentActionName);
+    currentActionName = _getCurrentActionName(canvas.currentAction);
 
     canvas.onPixelColorChange.listen((_) {
       _delayUpdateZipped();
@@ -228,6 +228,26 @@ class AnsiPixelsElement extends PolymerElement {
       if (afterRendered == null) return;
       afterRendered();
     });
+  }
+
+  String _getCurrentActionName(Action a) {
+    if (a is DrawingAction) {
+      return (drawingColorCode == null) ?
+          'Erase' : 'Drawing with code:${drawingColorCode.code}';
+    } else if (a is SameColorsSelectionAction){
+      return 'Select all same colors';
+    } else if (a is SameColorNeighborsSelectionAction) {
+      return 'Select same color neighbors';
+    } else if (a is RectangleSelectionAction) {
+      return 'Select as a rectangle';
+    } else if (a is InstantSelectionAction) {
+      return 'Select as drawing';
+    } else if (a is FloatLayerAction) {
+      return 'Move/paste/delete the float-layer';
+    } else {
+      window.console.warn('Unknown action: ${a.runtimeType}');
+      return '-';
+    }
   }
 
   hpixelsSettingChanged(String old) {
@@ -347,6 +367,10 @@ class AnsiPixelsElement extends PolymerElement {
 
   // elements events
 
+  void changeColorSpace(Event e, _, InputElement target) {
+    colorSpace = target.value;
+  }
+
   void deselectColor() {
     canvas.drawingColor = null;
     _palette.selectedCell = null;
@@ -426,6 +450,3 @@ bool _haveFloatLayer(Action a) =>
     a is FloatLayerAction && a.floatLayer.points.isNotEmpty;
 bool _haveOutline(Action a) =>
     a is OutlinableAction && a.outline.isNotEmpty;
-String _getCurrentActionName(Action a) {
-  return a.runtimeType.toString().replaceFirst(new RegExp(r'Action$'), '');
-}
