@@ -51,46 +51,60 @@ input[type="checkbox"], button, label {
 button[disabled] {
   cursor: default;
 }
-section {
-  margin: 12px;
-}
 #bgcolor-container {
   padding: 12px;
   border-radius: 3px;
   position: relative;
 }
+#fold-buttons {
+  text-align: right;
+  margin: 0px 0px 9px 0px;
+}
+#fold-buttons fold-button {
+  text-align: left;
+}
 #console {
   white-space: nowrap;
-  margin-top: 30px;
-  margin-bottom: 0px;
-}
-#console > p {
   overflow: hidden;
   margin: 0px;
 }
-#console code {
-  padding: 3px;
-}
-#console input[x-hide] {
-  display: none;
-}
-#console.selected > p {
-  text-overflow: clip;
-}
 #console .cmd {
-  width: 100%;
+  width: 95%;
+  width: -webkit-calc(100% - 2em);
+  width: -moz-calc(100% - 2em);
+  width: -ms-calc(100% - 2em);
+  width: calc(100% - 2em);
   font-family: monospace;
   border: 1px inset transparent;
   background-color: transparent;
   cursor: pointer;
   color: inherit;
-  overflow: hidden;
 }
 #console .cmd:focus {
   border: 1px inset black;
   background-color: white;
   cursor: text;
   color: black;
+}
+#console .cmd[x-hide] {
+  display: none;
+}
+#two-columns-wrapper {
+  display: -webkit-flex;
+  display: flex;
+}
+#first-column {
+  -webkit-order: 2;
+  order: 2;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+  margin: 0px 6px;
+}
+#second-column {
+  -webkit-order: 1;
+  order: 1;
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
 }
 #controller {
   background-color: rgba(255, 255, 255, 0.6);
@@ -100,8 +114,6 @@ section {
   box-shadow: 3px 3px 1px #000;
   border: 1px solid #666;
   box-sizing: border-box;
-  position: absolute;
-  right: 0px; top: 60px;
 }
 #controller > section {
   margin: 6px;
@@ -135,14 +147,15 @@ ansi-color-palette {
   mergin: 5px auto;
 }
 #canvas {
-  display: inline-block;
   box-sizing: border-box;
+  width: 100%;
+  overflow-x: auto;
 }
 #settings {
   position: absolute;
   background-color: rgba(247, 255, 255, 0.95);
-  top: 87px; bottom: 87px;
-  left: 87px; right: 87px;
+  top: 81px;
+  left: 10%; right: 10%;
   padding: 27px;
   box-shadow: 6px 6px 0px #000;
   border-radius: 3px;
@@ -162,10 +175,6 @@ th {
 }
 .flex-wrapper > span, .flex-wrapper > input{
   display: flex-item;
-}
-#fold-buttons {
-  position: absolute;
-  top: 0px; right: 0px;
 }
 </style><script src="packages/web_components/platform.js"></script><script src="packages/web_components/dart_support.js"></script>
 
@@ -930,46 +939,60 @@ input[type="checkbox"], button, label {
 button[disabled] {
   cursor: default;
 }
-section {
-  margin: 12px;
-}
 #bgcolor-container {
   padding: 12px;
   border-radius: 3px;
   position: relative;
 }
+#fold-buttons {
+  text-align: right;
+  margin: 0px 0px 9px 0px;
+}
+#fold-buttons fold-button {
+  text-align: left;
+}
 #console {
   white-space: nowrap;
-  margin-top: 30px;
-  margin-bottom: 0px;
-}
-#console > p {
   overflow: hidden;
   margin: 0px;
 }
-#console code {
-  padding: 3px;
-}
-#console input[x-hide] {
-  display: none;
-}
-#console.selected > p {
-  text-overflow: clip;
-}
 #console .cmd {
-  width: 100%;
+  width: 95%;
+  width: -webkit-calc(100% - 2em);
+  width: -moz-calc(100% - 2em);
+  width: -ms-calc(100% - 2em);
+  width: calc(100% - 2em);
   font-family: monospace;
   border: 1px inset transparent;
   background-color: transparent;
   cursor: pointer;
   color: inherit;
-  overflow: hidden;
 }
 #console .cmd:focus {
   border: 1px inset black;
   background-color: white;
   cursor: text;
   color: black;
+}
+#console .cmd[x-hide] {
+  display: none;
+}
+#two-columns-wrapper {
+  display: -webkit-flex;
+  display: flex;
+}
+#first-column {
+  -webkit-order: 2;
+  order: 2;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+  margin: 0px 6px;
+}
+#second-column {
+  -webkit-order: 1;
+  order: 1;
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
 }
 #controller {
   background-color: rgba(255, 255, 255, 0.6);
@@ -979,8 +1002,6 @@ section {
   box-shadow: 3px 3px 1px #000;
   border: 1px solid #666;
   box-sizing: border-box;
-  position: absolute;
-  right: 0px; top: 60px;
 }
 #controller > section {
   margin: 6px;
@@ -1014,14 +1035,15 @@ ansi-color-palette {
   mergin: 5px auto;
 }
 #canvas {
-  display: inline-block;
   box-sizing: border-box;
+  width: 100%;
+  overflow-x: auto;
 }
 #settings {
   position: absolute;
   background-color: rgba(247, 255, 255, 0.95);
-  top: 87px; bottom: 87px;
-  left: 87px; right: 87px;
+  top: 81px;
+  left: 10%; right: 10%;
   padding: 27px;
   box-shadow: 6px 6px 0px #000;
   border-radius: 3px;
@@ -1042,121 +1064,136 @@ th {
 .flex-wrapper > span, .flex-wrapper > input{
   display: flex-item;
 }
-#fold-buttons {
-  position: absolute;
-  top: 0px; right: 0px;
-}
 </style>
 
     <div id="bgcolor-container" on-mousedown="{{foldAll}}">
 
-      <section id="console">
-        <p title="Paste this into your command-line terminal">
+      <section id="fold-buttons">
+        <span on-mousedown="{{stopPropergation}}">
+        <fold-button target="#controller">
+          <on-folding>Open</on-folding>
+          <on-unfolding>Close</on-unfolding>
+          Tools
+        </fold-button>
+        <fold-button target="#settings" folding="">
+          <on-folding>Open</on-folding>
+          <on-unfolding>Close</on-unfolding>
+          Settings
+        </fold-button>
+        </span>
+      </section>
+
+      <section id="console" title="Paste this into your command-line terminal">
           <code>$ </code>
           <input x-hide?="{{!commands['curl']}}" class="cmd" value="curl -s '{{ansiTextUrl}}'" on-focus="{{selectInputAllText}}" readonly="">
           <input x-hide?="{{!commands['wget']}}" class="cmd" value="wget -q -O- '{{ansiTextUrl}}'" on-focus="{{selectInputAllText}}" readonly="">
           <input x-hide?="{{!commands['script']}}" class="cmd" value="python {{pythonArgs}}" on-focus="{{selectInputAllText}}" readonly="">
-        </p>
       </section>
 
-      <section id="controller" on-mousedown="{{stopPropergation}}">
-        <section id="current-action">
-          Action: {{currentActionName}}
-        </section>
-        <section id="color-space">
-          Colors:
-          <label>
-            <input name="colors" type="radio" value="8" on-change="{{changeColorSpace}}" checked?="{{colorSpace == '8'}}">8
-          </label>
-          <label>
-            <input name="colors" type="radio" value="16" on-change="{{changeColorSpace}}" checked?="{{colorSpace == '16'}}">16
-          </label>
-          <label>
-            <input name="colors" type="radio" value="256" on-change="{{changeColorSpace}}" checked?="{{colorSpace == '256'}}">256
-          </label>
-        </section>
-        <section id="palette">
-          <ansi-color-palette colorspace="{{colorSpace}}"></ansi-color-palette>
-          <button id="erase-colors" on-click="{{deselectColor}}" x-active?="{{drawingColorCode == null}}">
-            Erase
-          </button>
-        </section>
-        <section id="selection">
-          <h3>Selection</h3>
-          <ul>
-            <li><button on-click="{{canvas.startSameColorsSelection}}">Same color all</button>
-            </li><li><button on-click="{{canvas.startSameColorNeiborsSelection}}">Same color neighbors</button>
-            </li><li><button on-click="{{canvas.startRectSelection}}">Rectangle</button>
-            </li><li><span class="or-ctrl-click">or <code>ctrl + left-click</code></span>
-          </li></ul>
-        </section>
-        <section id="operation">
-          <h3>Operation</h3>
-          <ul>
-            <li><button disabled?="{{!hasSelection}}" on-click="{{canvas.copySelection}}">Copy</button>
-            </li><li><button disabled?="{{!hasSelection}}" on-click="{{canvas.cutSelection}}">Cut</button>
-            </li><li><button disabled?="{{!hasSelection}}" on-click="{{canvas.fillSelection}}">Fill</button>
-            </li><li><button disabled?="{{!hasFloatLayer}}" on-click="{{canvas.pasteFloatLayer}}">Paste</button>
-            </li><li><button disabled?="{{!hasOutline}}" on-click="{{delete}}">Delete</button>
-          </li></ul>
-        </section>
-        <section id="nogrids-wrapper">
-          <p>
-            <input id="nogrids" type="checkbox" checked="{{nogrids}}">
-            <label for="nogrids">No grid-lines</label>
-          </p>
-        </section>
-        <section id="download">
-          <p id="share-link-wrapper">
-            <label for="share-link">Share link :</label>
-            <input id="share-link" value="{{shareLink}}" placeholder="Focus here" size="10" on-focus="{{selectInputAllText}}" readonly="">
-          </p>
-          <p>
-            <button id="download-as-png" title="Download as a .png image" on-click="{{downloadAsPng}}">Download as PNG</button>
-          </p>
-        </section>
-      </section>
+      <div id="two-columns-wrapper">
 
-      <section id="canvas">
-        <pixel-canvas drawable="" horizontalpixels="{{hpixels}}" verticalpixels="{{vpixels}}" pixelsize="{{pixelSize}}" nogridlines="{{nogrids}}" gridlinecolor="{{gridColor}}"></pixel-canvas>
-      </section>
+        <div id="first-column">
+          <section id="controller" on-mousedown="{{stopPropergation}}">
+            <section id="current-action">
+              Action: {{currentActionName}}
+            </section>
+            <section id="color-space">
+              Colors:
+              <label>
+                <input name="colors" type="radio" value="8" on-change="{{changeColorSpace}}" checked?="{{colorSpace == '8'}}">8
+              </label>
+              <label>
+                <input name="colors" type="radio" value="16" on-change="{{changeColorSpace}}" checked?="{{colorSpace == '16'}}">16
+              </label>
+              <label>
+                <input name="colors" type="radio" value="256" on-change="{{changeColorSpace}}" checked?="{{colorSpace == '256'}}">256
+              </label>
+            </section>
+            <section id="palette">
+              <ansi-color-palette colorspace="{{colorSpace}}"></ansi-color-palette>
+              <button id="erase-colors" on-click="{{deselectColor}}" x-active?="{{drawingColorCode == null}}">
+                Erase
+              </button>
+            </section>
+            <section id="selection">
+              <h3>Selection</h3>
+              <ul>
+                <li><button on-click="{{canvas.startSameColorsSelection}}">Same color all</button>
+                </li><li><button on-click="{{canvas.startSameColorNeiborsSelection}}">Same color neighbors</button>
+                </li><li><button on-click="{{canvas.startRectSelection}}">Rectangle</button>
+                </li><li><span class="or-ctrl-click">or <code>ctrl + left-click</code></span>
+              </li></ul>
+            </section>
+            <section id="operation">
+              <h3>Operation</h3>
+              <ul>
+                <li><button disabled?="{{!hasSelection}}" on-click="{{canvas.copySelection}}">Copy</button>
+                </li><li><button disabled?="{{!hasSelection}}" on-click="{{canvas.cutSelection}}">Cut</button>
+                </li><li><button disabled?="{{!hasSelection}}" on-click="{{canvas.fillSelection}}">Fill</button>
+                </li><li><button disabled?="{{!hasFloatLayer}}" on-click="{{canvas.pasteFloatLayer}}">Paste</button>
+                </li><li><button disabled?="{{!hasOutline}}" on-click="{{delete}}">Delete</button>
+              </li></ul>
+            </section>
+            <section id="nogrids-wrapper">
+              <p>
+                <input id="nogrids" type="checkbox" checked="{{nogrids}}">
+                <label for="nogrids">No grid-lines</label>
+              </p>
+            </section>
+            <section id="download">
+              <p id="share-link-wrapper">
+                <label for="share-link">Share link :</label>
+                <input id="share-link" value="{{shareLink}}" placeholder="Focus here" size="10" on-focus="{{selectInputAllText}}" readonly="">
+              </p>
+              <p>
+                <button id="download-as-png" title="Download as a .png image" on-click="{{downloadAsPng}}">Download as PNG</button>
+              </p>
+            </section>
+          </section>
+        </div>
+        <div id="second-column">
+          <section id="canvas">
+            <pixel-canvas drawable="" horizontalpixels="{{hpixels}}" verticalpixels="{{vpixels}}" pixelsize="{{pixelSize}}" nogridlines="{{nogrids}}" gridlinecolor="{{gridColor}}"></pixel-canvas>
+          </section>
 
-      <section id="samples">
-        <h2>Samples</h2>
-        <ul>
-          <li>
-            <a href="#eAGllEkLwjAQhf-KzEkhyGAhSm_qwbsePIgHrW0thFZcQBT_u6maZhvrUl4pWb73kkxor7DLzrGYZZcYwl6fwTodF6LYQwjTyWjYRtZ6Pd1BBxgk1fR8mx1jORKV_dluFckAGMiBvEj32eYAYbISh5g9F5DdxSI_CcEav_ChsrlkzSPLrEAKG4Y9UwLW-zMJzYRfT6fNpd0NQEsmp0iF69nA4Xz2Fa0mfQOBG9txfRZfd350AuoXsy8ICfe7YmPlCDwXOgfiRnVVS43Z5eIMSXG6uvwhhZgicR_ysu2rRgem013W7tfsBL_FNYq1O3HwTxs3qoi_4bbhC9zM1SuiLiEnZZjoz1WJ_P8tb3dn6aBe">
-              A mage 1 (8 colors)
-            </a>
-          </li>
-          <li>
-            <a href="#eAGVk0uLwjAQx7-KzEkhLBN7qPS2etj7etiDePBRtRCs-ABx2e--bfNqJhNRpg1N5vf_5zHNL5yqe6nm1aOEYpwLWO9ntarPUMD31_RziGJgno_JCATsXPrnUF3LZmTT9uen1aYxgEkzcKz352p7gWK3UpdS6Ama7mJxvCkl3m_QRDi8FC_7aXluAt_w6OtCfULKCZ6JOBpTCptAMg1GOBpOmgjp_v4pGdIc2-azJ3Rgih2MRoIUDBabdW_mvpMnpwUezxyeqq1V2MCYJ0tCovFnHynaffoyxMWhbFwQJAtyoE3n5uSZevth7yedOHKUEchUTxJPJDJm4y9NTUH-dmhbzUqBbn6ZYO0btlrL_Akyit494W5oOjr35d8_NLtiZg==">
-              A mage 2 (8 colors)
-            </a>
-          </li>
-          <li>
-            <a href="#eAGtVM8LwiAU_lfinQokTKHGbtWhex06RId-rDUYLVZBFP3vudTh3DQd49vUOd_33vee-oZr8ozSVfKKIByNEezjeZZmOYSwXMymfYx64hkGA0BwKn-vz8k9YjOH4nt13R0YAQRs4pLFeXK8QXjPHxHi_Oxrs7k80hS1bPAP3nZb5OwVCxDxdu8GI8rA-Ym3nhZSquiKvcEZVzNhMOrydSCjlimTY51c8tb1UmHBGSQa7IvIiyW0RNVYnXd1LqtMtLF7UrAIW7Wn4q3tHwMR16FGpQOXqowUaj5NYEQW-4mogRq-ih-zRYKUa_JNrP6Jso5qbfV02Mthg1s5lIBsgtzCoZpzvf9T13qGiLF3JGrccnqW2t5n8oBWW58D5Vnapjts-_kCVMQmQw==">
-              A fighting vehicle (8 colors)
-            </a>
-            <a title="Metal Max - Wikipedia, the free encyclopedia" href="http://en.wikipedia.org/wiki/Metal_Max">?</a>
-          </li>
-          <li>
-            <a href="#eAGVlMtOwzAQRX8FeQWShRonTersgAV7umARdVFKWiJFTdWChED8Ox6_MhlPEZWch-05947Hcb7Fofts-2X31Yo6K6R42T0M_XAUtXh6vL-7nskr324XN0KKbZx-fuveWzOygf7ysN4YAaHmpRnaD7tj93oS9Xbdn1rpLEy3afYffS_JLSuZxgXCbSWbhCwKe80X0FCPlwkKZ0mVZ_E906kKErCh5qFUEEA6wGq6HOpehrBJJ5KzPNAIdEtjuGDu-pbl6lUpXLkSlcs3zYOwzHHR_G6l2do8dICtuQ6DsT5ciaKAg62AT30ioNEuMeyYuG8jWUVFmrP3yasAwdvoaqZtFVg4uAGCrymusARvDfM2ZkpTfwMbQBc-VXjxcAA15mIZHQcxmI2NjBCvGOCVITf3sYb1xiBaW_K5IIEyBdNdZf4e-Kzg_P8roPHZ4_9AZxTwIXAqxPkvBcLggl_sj4Uu4FM59km0Vj-_i96k9Q==">
-              A tresure hunter (256 colors)
-            </a>
-          </li>
-          <li>
-            <a href="#eAGrVirIrEjNCc6sSlWyMjbWUUpKd87PyS9SslIKcndy1DDQUYAiPQtNJR2lNLh0eEZmSSpQJBnEDy5ITAYaoGQBFMjLTy_KTClWskpLzClO1YFYAORGR5vrYIWxOigyBnhkDPDIGOA0DSpHgj3YZAyQ7UeSMSBDxhxVHMMFyDKxtQCtVGDR">
-              kui avater
-            </a>
-          </li>
-          <li>
-            <a href="#eAGrVirIrEjNCc6sSlWyMjXQUUpKd87PyS9SslIKcndy1DDQUYAiPQtNJR2lNLh0eEZmSSpQJBnEDy5ITAYaoGRkagYUystPL8pMKVayKikqTdWB2ADkRUcb6MBhrA6YZwaEMB6YBSKhPAhElTOF6oOZElsLAJ-TMsM=">
-              ANSI Pixels favicon
-            </a>
-          </li>
-        </ul>
-      </section>
+          <section id="samples">
+            <h2>Samples</h2>
+            <ul>
+              <li>
+                <a href="#eAGllEkLwjAQhf-KzEkhyGAhSm_qwbsePIgHrW0thFZcQBT_u6maZhvrUl4pWb73kkxor7DLzrGYZZcYwl6fwTodF6LYQwjTyWjYRtZ6Pd1BBxgk1fR8mx1jORKV_dluFckAGMiBvEj32eYAYbISh5g9F5DdxSI_CcEav_ChsrlkzSPLrEAKG4Y9UwLW-zMJzYRfT6fNpd0NQEsmp0iF69nA4Xz2Fa0mfQOBG9txfRZfd350AuoXsy8ICfe7YmPlCDwXOgfiRnVVS43Z5eIMSXG6uvwhhZgicR_ysu2rRgem013W7tfsBL_FNYq1O3HwTxs3qoi_4bbhC9zM1SuiLiEnZZjoz1WJ_P8tb3dn6aBe">
+                  A mage 1 (8 colors)
+                </a>
+              </li>
+              <li>
+                <a href="#eAGVk0uLwjAQx7-KzEkhLBN7qPS2etj7etiDePBRtRCs-ABx2e--bfNqJhNRpg1N5vf_5zHNL5yqe6nm1aOEYpwLWO9ntarPUMD31_RziGJgno_JCATsXPrnUF3LZmTT9uen1aYxgEkzcKz352p7gWK3UpdS6Ama7mJxvCkl3m_QRDi8FC_7aXluAt_w6OtCfULKCZ6JOBpTCptAMg1GOBpOmgjp_v4pGdIc2-azJ3Rgih2MRoIUDBabdW_mvpMnpwUezxyeqq1V2MCYJ0tCovFnHynaffoyxMWhbFwQJAtyoE3n5uSZevth7yedOHKUEchUTxJPJDJm4y9NTUH-dmhbzUqBbn6ZYO0btlrL_Akyit494W5oOjr35d8_NLtiZg==">
+                  A mage 2 (8 colors)
+                </a>
+              </li>
+              <li>
+                <a href="#eAGtVM8LwiAU_lfinQokTKHGbtWhex06RId-rDUYLVZBFP3vudTh3DQd49vUOd_33vee-oZr8ozSVfKKIByNEezjeZZmOYSwXMymfYx64hkGA0BwKn-vz8k9YjOH4nt13R0YAQRs4pLFeXK8QXjPHxHi_Oxrs7k80hS1bPAP3nZb5OwVCxDxdu8GI8rA-Ym3nhZSquiKvcEZVzNhMOrydSCjlimTY51c8tb1UmHBGSQa7IvIiyW0RNVYnXd1LqtMtLF7UrAIW7Wn4q3tHwMR16FGpQOXqowUaj5NYEQW-4mogRq-ih-zRYKUa_JNrP6Jso5qbfV02Mthg1s5lIBsgtzCoZpzvf9T13qGiLF3JGrccnqW2t5n8oBWW58D5Vnapjts-_kCVMQmQw==">
+                  A fighting vehicle (8 colors)
+                </a>
+                <a title="Metal Max - Wikipedia, the free encyclopedia" href="http://en.wikipedia.org/wiki/Metal_Max">?</a>
+              </li>
+              <li>
+                <a href="#eAGVlMtOwzAQRX8FeQWShRonTersgAV7umARdVFKWiJFTdWChED8Ox6_MhlPEZWch-05947Hcb7Fofts-2X31Yo6K6R42T0M_XAUtXh6vL-7nskr324XN0KKbZx-fuveWzOygf7ysN4YAaHmpRnaD7tj93oS9Xbdn1rpLEy3afYffS_JLSuZxgXCbSWbhCwKe80X0FCPlwkKZ0mVZ_E906kKErCh5qFUEEA6wGq6HOpehrBJJ5KzPNAIdEtjuGDu-pbl6lUpXLkSlcs3zYOwzHHR_G6l2do8dICtuQ6DsT5ciaKAg62AT30ioNEuMeyYuG8jWUVFmrP3yasAwdvoaqZtFVg4uAGCrymusARvDfM2ZkpTfwMbQBc-VXjxcAA15mIZHQcxmI2NjBCvGOCVITf3sYb1xiBaW_K5IIEyBdNdZf4e-Kzg_P8roPHZ4_9AZxTwIXAqxPkvBcLggl_sj4Uu4FM59km0Vj-_i96k9Q==">
+                  A tresure hunter (256 colors)
+                </a>
+              </li>
+              <li>
+                <a href="#eAGrVirIrEjNCc6sSlWyMjbWUUpKd87PyS9SslIKcndy1DDQUYAiPQtNJR2lNLh0eEZmSSpQJBnEDy5ITAYaoGQBFMjLTy_KTClWskpLzClO1YFYAORGR5vrYIWxOigyBnhkDPDIGOA0DSpHgj3YZAyQ7UeSMSBDxhxVHMMFyDKxtQCtVGDR">
+                  kui avater
+                </a>
+              </li>
+              <li>
+                <a href="#eAGrVirIrEjNCc6sSlWyMjXQUUpKd87PyS9SslIKcndy1DDQUYAiPQtNJR2lNLh0eEZmSSpQJBnEDy5ITAYaoGRkagYUystPL8pMKVayKikqTdWB2ADkRUcb6MBhrA6YZwaEMB6YBSKhPAhElTOF6oOZElsLAJ-TMsM=">
+                  ANSI Pixels favicon
+                </a>
+              </li>
+            </ul>
+          </section>
+        </div>
+      </div>
 
       <section id="settings" on-mousedown="{{stopPropergation}}">
         <h2>Settings</h2>
@@ -1211,19 +1248,6 @@ th {
             </td>
           </tr>
         </tbody></table>
-      </section>
-
-      <section id="fold-buttons" on-mousedown="{{stopPropergation}}">
-        <fold-button target="#controller">
-          <on-folding>Open</on-folding>
-          <on-unfolding>Close</on-unfolding>
-          Tools
-        </fold-button>
-        <fold-button target="#settings" folding="">
-          <on-folding>Open</on-folding>
-          <on-unfolding>Close</on-unfolding>
-          Settings
-        </fold-button>
       </section>
 
       <datalist id="terminal-colors">

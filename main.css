@@ -24,46 +24,60 @@ input[type="checkbox"], button, label {
 button[disabled] {
   cursor: default;
 }
-section {
-  margin: 12px;
-}
 #bgcolor-container {
   padding: 12px;
   border-radius: 3px;
   position: relative;
 }
+#fold-buttons {
+  text-align: right;
+  margin: 0px 0px 9px 0px;
+}
+#fold-buttons fold-button {
+  text-align: left;
+}
 #console {
   white-space: nowrap;
-  margin-top: 30px;
-  margin-bottom: 0px;
-}
-#console > p {
   overflow: hidden;
   margin: 0px;
 }
-#console code {
-  padding: 3px;
-}
-#console input[x-hide] {
-  display: none;
-}
-#console.selected > p {
-  text-overflow: clip;
-}
 #console .cmd {
-  width: 100%;
+  width: 95%;
+  width: -webkit-calc(100% - 2em);
+  width: -moz-calc(100% - 2em);
+  width: -ms-calc(100% - 2em);
+  width: calc(100% - 2em);
   font-family: monospace;
   border: 1px inset transparent;
   background-color: transparent;
   cursor: pointer;
   color: inherit;
-  overflow: hidden;
 }
 #console .cmd:focus {
   border: 1px inset black;
   background-color: white;
   cursor: text;
   color: black;
+}
+#console .cmd[x-hide] {
+  display: none;
+}
+#two-columns-wrapper {
+  display: -webkit-flex;
+  display: flex;
+}
+#first-column {
+  -webkit-order: 2;
+  order: 2;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+  margin: 0px 6px;
+}
+#second-column {
+  -webkit-order: 1;
+  order: 1;
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
 }
 #controller {
   background-color: rgba(255, 255, 255, 0.6);
@@ -73,8 +87,6 @@ section {
   box-shadow: 3px 3px 1px #000;
   border: 1px solid #666;
   box-sizing: border-box;
-  position: absolute;
-  right: 0px; top: 60px;
 }
 #controller > section {
   margin: 6px;
@@ -108,14 +120,15 @@ ansi-color-palette {
   mergin: 5px auto;
 }
 #canvas {
-  display: inline-block;
   box-sizing: border-box;
+  width: 100%;
+  overflow-x: auto;
 }
 #settings {
   position: absolute;
   background-color: rgba(247, 255, 255, 0.95);
-  top: 87px; bottom: 87px;
-  left: 87px; right: 87px;
+  top: 81px;
+  left: 10%; right: 10%;
   padding: 27px;
   box-shadow: 6px 6px 0px #000;
   border-radius: 3px;
@@ -135,8 +148,4 @@ th {
 }
 .flex-wrapper > span, .flex-wrapper > input{
   display: flex-item;
-}
-#fold-buttons {
-  position: absolute;
-  top: 0px; right: 0px;
 }
