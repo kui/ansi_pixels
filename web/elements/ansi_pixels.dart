@@ -75,6 +75,9 @@ class AnsiPixelsElement extends PolymerElement {
       canvas != null && _haveFloatLayer(canvas.currentAction);
   @reflectable
   bool get hasOutline => hasSelection || hasFloatLayer;
+  @reflectable
+  bool get isPixelPickingAction =>
+      canvas != null && canvas.currentAction is PixelPickingAction;
 
   @observable String gridColor = lightGridColor.toColorString();
   @observable String ansiTextUrl;
@@ -197,7 +200,7 @@ class AnsiPixelsElement extends PolymerElement {
       afterRendered = null;
       if (!updateZippedJson)
         // canncel zippedJson update because the browser history go forward
-        new Timer(new Duration(milliseconds: 800), () => _clearZippedJsonUpdater());
+        new Timer(ZIPPED_JSON_UPDATE_DELAY * 0.9, () => _clearZippedJsonUpdater());
     };
   }
 
@@ -218,6 +221,9 @@ class AnsiPixelsElement extends PolymerElement {
       notifyPropertyChange(#hasFloatLayer, oldHasFloatLayer, hasFloatLayer);
       notifyPropertyChange(#hasOutline, oldHasSelection || oldHasFloatLayer,
           hasOutline);
+      final oldIsPixelPickingAction = e.oldAction is PixelPickingAction;
+      notifyPropertyChange(#isPixelPickingAction, oldIsPixelPickingAction,
+          isPixelPickingAction);
 
       currentActionName = _getCurrentActionName(e.newAction);
     });
@@ -246,6 +252,8 @@ class AnsiPixelsElement extends PolymerElement {
       return 'Select as drawing';
     } else if (a is FloatLayerAction) {
       return 'Move/paste/delete the float-layer';
+    } else if (a is PixelPickingAction) {
+      return 'Pick a color';
     } else {
       window.console.warn('Unknown action: ${a.runtimeType}');
       return '-';
@@ -382,6 +390,33 @@ class AnsiPixelsElement extends PolymerElement {
 
     InputElement input = target;
     async((_) => input.setSelectionRange(0, input.value.length, 'backward'));
+  }
+
+  void pickColor() {
+    canvas.pickPixel().then((pixel) {
+      final color = pixel.color;
+      final int code = getAnsiCodeFromColor(pixel.color);
+      if (code != null) {
+        if (colorSpace == '8') {
+          if (code > 16) {
+            colorSpace = '256';
+          } else if (code > 8) {
+            colorSpace = '16';
+          }
+        } else if (colorSpace == '16') {
+          if (code > 16) {
+            colorSpace = '256';
+          }
+        }
+      }
+      async((_) {
+        if (code == null) {
+          deselectColor();
+        } else {
+          _palette.selectByCodeInt(code);
+        }
+      });
+    });
   }
 
   int _parsePixels(String s) => _parseInt(s, DEFAULT_PIXELS);

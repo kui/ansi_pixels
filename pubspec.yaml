@@ -1,15 +1,14 @@
 name: ansi_pixels
 description: A Polymer.dart application to edit ANSI art
+environment:
+  sdk: '>=1.6.0'
 dependencies:
+  ansi_color_palette: '>=1.2.0 <1.3.0'
   archive: '>=1.0.0 <1.1.0'
   crypto: '>=0.9.0 <0.10.0'
-  polymer: '>=0.12.0 <0.13.0'
-  pixel_canvas: '>=1.0.0 <1.1.0'
-  ansi_color_palette: '>=1.1.0 <1.2.0'
-  fold_button: '>=1.0.0 <1.1.0'
-  #pixel_canvas: {path: '../pixel_canvas'}
-  #ansi_color_palette: {path: '../ansi_color_palette'}
-  #fold_button: {path: '../fold_button'}
+  fold_button: '>=1.1.0 <1.2.0'
+  pixel_canvas: '>=1.1.0 <1.2.0'
+  polymer: '>=0.13.0 <0.14.0'
 dev_dependencies:
   ghpages_generator: '>=0.2.0 <0.3.0'
   path: '>=1.2.0 <1.3.0'

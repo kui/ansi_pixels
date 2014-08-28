@@ -57,25 +57,29 @@
               <label>
                 <input name="colors" type="radio" value="8"
                   on-change="{{changeColorSpace}}"
-                  checked?="{{colorSpace == '8'}}">8
+                  checked="{{colorSpace == '8'}}">8
               </label>
               <label>
                 <input name="colors" type="radio" value="16"
                   on-change="{{changeColorSpace}}"
-                  checked?="{{colorSpace == '16'}}">16
+                  checked="{{colorSpace == '16'}}">16
               </label>
               <label>
                 <input name="colors" type="radio" value="256"
                   on-change="{{changeColorSpace}}"
-                  checked?="{{colorSpace == '256'}}">256
+                  checked="{{colorSpace == '256'}}">256
               </label>
             </section>
             <section id="palette">
               <ansi-color-palette
                  colorSpace="{{colorSpace}}"></ansi-color-palette>
-              <button id="erase-colors" on-click="{{deselectColor}}"
-                x-active?="{{drawingColorCode == null}}">
+              <button on-click="{{deselectColor}}"
+                disabled?="{{drawingColorCode == null}}">
                 Erase
+              </button>
+              <button on-click="{{pickColor}}"
+                disabled?="{{isPixelPickingAction}}">
+                Pick color
               </button>
             </section>
             <section id="selection">
@@ -245,6 +249,7 @@
             <td>
               <input type="checkbox" checked="{{isStackingHistory}}"
                 id="stacking-history">
+              <strong>Experimental Future</strong>
             </td>
           </tr>
         </table>
