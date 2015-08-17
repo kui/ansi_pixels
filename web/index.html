@@ -21,13 +21,12 @@
     <link href="//fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="main.css">
 
-    <script src="packages/web_components/platform.js"></script>
-    <script src="packages/web_components/dart_support.js"></script>
+    <link rel="import" href="elements/common-style.html">
     <link rel="import" href="elements/ansi_pixels.html">
     <script type="application/dart">export 'package:polymer/init.dart';</script>
-    <script src="packages/browser/dart.js"></script>
   </head>
   <body>
+    <core-style ref="common-style"></core-style>
     <header>
       <h1>ANSI Pixels</h1>
       <p>

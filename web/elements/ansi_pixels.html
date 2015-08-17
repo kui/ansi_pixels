@@ -2,9 +2,11 @@
 <link rel="import" href="packages/pixel_canvas/pixel_canvas.html">
 <link rel="import" href="packages/ansi_color_palette/ansi_color_palette.html">
 <link rel="import" href="packages/fold_button/fold_button.html">
+<link rel="import" href="common-style.html">
 <polymer-element name="ansi-pixels">
   <template>
-    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="ansi_pixels.css">
+    <core-style ref="common-style"></core-style>
 
     <div id="bgcolor-container" on-mousedown="{{foldAll}}">
 
