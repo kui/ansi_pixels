@@ -245,8 +245,8 @@ class AnsiPixelsElement extends PolymerElement {
   nogridsChanged() {
     // The `canvas.noGridlines` assignment directly is required.
     // Under normal circumstances, no gridlines config change will be
-    // propergated by only using `<pixel-canvas ... noGridlines?="{{nogrids}}">`.
-    // However, it is not working.
+    // propagated by only using `<pixel-canvas ... noGridlines?="{{nogrids}}">`.
+    // However, it is not working on dart2js.
     canvas.noGridlines = nogrids;
     _delayUpdateZipped();
   }
