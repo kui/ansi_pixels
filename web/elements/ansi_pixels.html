@@ -11,7 +11,7 @@
     <div id="bgcolor-container" on-mousedown="{{foldAll}}">
 
       <section id="fold-buttons">
-        <span on-mousedown="{{stopPropergation}}">
+        <span on-mousedown="{{stopPropagation}}">
         <fold-button target="#controller">
           <on-folding>Open</on-folding>
           <on-unfolding>Close</on-unfolding>
@@ -50,7 +50,7 @@
       <div id="two-columns-wrapper">
 
         <div id="first-column">
-          <section id="controller" on-mousedown="{{stopPropergation}}">
+          <section id="controller" on-mousedown="{{stopPropagation}}">
             <section id="current-action">
               Action: {{currentActionName}}
             </section>
@@ -151,7 +151,7 @@
               horizontalPixels="{{hpixels}}"
               verticalPixels="{{vpixels}}"
               pixelSize="{{pixelSize}}"
-              noGridlines="{{nogrids}}"
+              noGridlines?="{{nogrids}}"
               gridlineColor="{{gridColor}}"></pixel-canvas>
           </section>
 
@@ -200,15 +200,15 @@
         </div>
       </div>
 
-      <section id="settings" on-mousedown="{{stopPropergation}}">
+      <section id="settings" on-mousedown="{{stopPropagation}}">
         <h2>Settings</h2>
         <table>
           <tr>
             <th>Horizontal Pixels:</th>
             <td>
               <div class="flex-wrapper">
-                <input id="hpixels" type="number" value="{{hpixelsSetting}}" min="4" max="256">
-                <input type="range" value="{{hpixelsSetting}}" min="4" max="256">
+                <input id="hpixels" type="number" value="{{hpixels}}" min="4" max="256">
+                <input type="range" value="{{hpixels}}" min="4" max="256">
               </div>
             </td>
           </tr>
@@ -216,8 +216,8 @@
             <th>Vertical Pixels:</th>
             <td>
               <div class="flex-wrapper">
-                <input id="vpixels" type="number" value="{{vpixelsSetting}}" min="4" max="256">
-                <input type="range" value="{{vpixelsSetting}}" min="4" max="256">
+                <input id="vpixels" type="number" value="{{vpixels}}" min="4" max="256">
+                <input type="range" value="{{vpixels}}" min="4" max="256">
               </div>
             </td>
           </tr>
@@ -225,8 +225,8 @@
             <th>Pixel Size:</th>
             <td>
               <div class="flex-wrapper">
-                <input type="number" value="{{pixelSizeSetting}}" min="4" max="50">
-                <input type="range" value="{{pixelSizeSetting}}" min="4" max="50">
+                <input type="number" value="{{pixelSize}}" min="4" max="50">
+                <input type="range" value="{{pixelSize}}" min="4" max="50">
               </div>
             </td>
           </tr>

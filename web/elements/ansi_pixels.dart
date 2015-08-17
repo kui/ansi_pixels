@@ -24,65 +24,14 @@ class AnsiPixelsElement extends PolymerElement {
   static final Rgba baseBgColor = new Rgba(240, 240, 240, 255);
 
   // settings
-  @published
-  String get hpixelsSetting =>
-      readValue(#hpixelsSetting, () => DEFAULT_PIXELS.toString());
-  set hpixelsSetting(String s) {
-    writeValue(#hpixelsSetting, s);
-  }
-  @published
-  String get vpixelsSetting =>
-      readValue(#vpixelsSetting, () => DEFAULT_PIXELS.toString());
-  set vpixelsSetting(String s) {
-    writeValue(#vpixelsSetting, s);
-  }
-  @published
-  String get pixelSizeSetting =>
-      readValue(#pixelSizeSetting, () => DEFAULT_PIXEL_SIZE.toString());
-  set pixelSizeSetting(String s) {
-    writeValue(#pixelSizeSetting, s);
-  }
-  @published
-  String get fgColor => readValue(#fgColor, () => 'White');
-  set fgColor(String s) {
-    writeValue(#fgColor, s);
-  }
-  @published
-  String get bgColor => readValue(#bgColor, () => 'RGBA(0, 0, 0, 0.8)');
-  set bgColor(String s) {
-    writeValue(#bgColor, s);
-  }
-  @published
-  bool get nogrids => readValue(#nogrids, () => false);
-  set nogrids(bool b) => writeValue(#nogrids, b);
-  @published
-  String get colorSpace => readValue(#colorSpace, () => '8');
-  set colorSpace(String s) => writeValue(#colorSpace, s);
-  @published
-  String get selectionContext => readValue(#selectionContext);
-  set selectionContext(String s) => writeValue(#selectionContext, s);
-  @published
-  String get zippedJson => readValue(#zippedJson);
-  set zippedJson(String s) => writeValue(#zippedJson, s);
-  @published
-  String get currentActionName => readValue(#currentActionName);
-  set currentActionName(String s) => writeValue(#currentActionName, s);
+  @observable int hpixels = DEFAULT_PIXELS;
+  @observable int vpixels = DEFAULT_PIXELS;
+  @observable int pixelSize = DEFAULT_PIXEL_SIZE;
+  @observable String fgColor = 'White';
+  @observable String bgColor = 'RGBA(0, 0, 0, 0.8)';
+  @observable bool nogrids = false;
+  @observable String colorSpace = '8';
 
-  @reflectable
-  int get hpixels => _parsePixels(hpixelsSetting);
-  set hpixels(int i) {
-    hpixelsSetting = i.toString();
-  }
-  @reflectable
-  int get vpixels => _parsePixels(vpixelsSetting);
-  set vpixels(int i) {
-    vpixelsSetting = i.toString();
-  }
-  @reflectable
-  int get pixelSize => _parsePixelSize(pixelSizeSetting);
-  set pixelSize(int i) {
-    pixelSizeSetting = i.toString();
-  }
   @reflectable
   AnsiColorCode get drawingColorCode =>
       _palette == null ? null : _palette.ansiCode;
@@ -98,6 +47,9 @@ class AnsiPixelsElement extends PolymerElement {
   bool get isPixelPickingAction =>
       canvas != null && canvas.currentAction is PixelPickingAction;
 
+  @observable String selectionContext;
+  @observable String zippedJson;
+  @observable String currentActionName;
   @observable String gridColor = lightGridColor.toColorString();
   @observable String ansiTextUrl;
   @observable String shareLink;
@@ -113,7 +65,6 @@ class AnsiPixelsElement extends PolymerElement {
       shadowRoot.querySelector('ansi-color-palette');
   FoldButtonElement get _settingFoldButton =>
       shadowRoot.querySelector('fold-button[target="#settings"]');
-  Element get _container => shadowRoot.querySelector('#bgcolor-container');
   ElementList get _bgColorTarget =>
       shadowRoot.querySelectorAll('#bgcolor-container');
   ElementList get _fgColorTarget =>
@@ -205,8 +156,8 @@ class AnsiPixelsElement extends PolymerElement {
   void _loadPixels(List<List<int>> pixels, bool updateZippedJson) {
     if (pixels == null || pixels.isEmpty) return;
 
-    vpixelsSetting = pixels.length.toString();
-    hpixelsSetting = pixels.first.length.toString();
+    vpixels = pixels.length;
+    hpixels = pixels.first.length;
     canvas.pixels.eachColorWithIndex((color, x, y) {
       canvas.setColor(x, y, null);
     });
@@ -281,17 +232,13 @@ class AnsiPixelsElement extends PolymerElement {
     }
   }
 
-  hpixelsSettingChanged(String old) {
-    notifyPropertyChange(#hpixels, _parsePixels(old), hpixels);
+  hpixelsChanged() {
     _delayUpdateZipped();
   }
-  vpixelsSettingChanged(String old) {
-    notifyPropertyChange(#vpixels, _parsePixels(old), vpixels);
+  vpixelsChanged() {
     _delayUpdateZipped();
   }
-
-  pixelSizeSettingChanged(String old) {
-    notifyPropertyChange(#pixelSize, _parsePixelSize(old), pixelSize);
+  pixelSizeChanged() {
     _delayUpdateZipped();
   }
 
@@ -399,7 +346,7 @@ class AnsiPixelsElement extends PolymerElement {
     _settingFoldButton.fold();
   }
 
-  void stopPropergation(MouseEvent e) => e.stopPropagation();
+  void stopPropagation(MouseEvent e) => e.stopPropagation();
 
   void cancelAction() => canvas.currentAction = null;
 
@@ -420,7 +367,6 @@ class AnsiPixelsElement extends PolymerElement {
 
   void pickColor() {
     canvas.pickPixel().then((pixel) {
-      final color = pixel.color;
       final int code = getAnsiCodeFromColor(pixel.color);
       if (code != null) {
         if (colorSpace == '8') {
@@ -476,4 +422,3 @@ bool _haveSelection(Action a) =>
     a is SelectionAction && a.bounds.points.isNotEmpty;
 bool _haveFloatLayer(Action a) =>
     a is FloatLayerAction && a.floatLayer.points.isNotEmpty;
-bool _haveOutline(Action a) => a is OutlinableAction && a.outline.isNotEmpty;
