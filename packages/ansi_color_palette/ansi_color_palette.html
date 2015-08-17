@@ -1,7 +1,3 @@
-<link rel="import" href="../../packages/polymer/polymer.html">
-<link rel="import" href="color8_palette.html">
-<link rel="import" href="color16_palette.html">
-<link rel="import" href="color256_palette.html">
 <polymer-element name="ansi-color-palette" attributes="colorSpace">
   <template>
     <template if="{{colorSpace != '16' && colorSpace != '256'}}">
@@ -14,5 +10,4 @@
       <color256-palette></color256-palette>
     </template>
   </template>
-  <script type="application/dart" src="ansi_color_palette.dart"></script>
 </polymer-element>
