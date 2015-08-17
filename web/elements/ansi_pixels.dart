@@ -243,11 +243,6 @@ class AnsiPixelsElement extends PolymerElement {
   }
 
   nogridsChanged() {
-    // The `canvas.noGridlines` assignment directly is required.
-    // Under normal circumstances, no gridlines config change will be
-    // propergated by only using `<pixel-canvas ... noGridlines?="{{nogrids}}">`.
-    // However, it is not working.
-    canvas.noGridlines = nogrids;
     _delayUpdateZipped();
   }
 
@@ -391,9 +386,6 @@ class AnsiPixelsElement extends PolymerElement {
     });
   }
 
-  int _parsePixels(String s) => _parseInt(s, DEFAULT_PIXELS);
-  int _parsePixelSize(String s) => _parseInt(s, DEFAULT_PIXEL_SIZE);
-
   Map toJson() => {
     'pixelSize': pixelSize,
     'bgColor': bgColor,
@@ -411,11 +403,6 @@ class AnsiPixelsElement extends PolymerElement {
   });
 
   Object toZippedJson() => zip(JSON.encode(this), urlSafe: true);
-}
-
-int _parseInt(String s, int defaultValue) {
-  if (s == null) return defaultValue;
-  return int.parse(s, radix: 10, onError: (_) => defaultValue);
 }
 
 bool _haveSelection(Action a) =>
