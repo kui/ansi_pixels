@@ -1,4 +1,3 @@
-
 import 'dart:html';
 import 'dart:convert';
 import 'dart:async';
@@ -16,7 +15,8 @@ class AnsiPixelsElement extends PolymerElement {
   static const int DEFAULT_PIXELS = 16;
   static const int DEFAULT_PIXEL_SIZE = 25;
   static const ZIPPED_JSON_UPDATE_DELAY = const Duration(seconds: 1);
-  static const SCRIPT_URL = 'https://raw.githubusercontent.com/kui/ansi_pixels/master/tool/ansi-pixels.py';
+  static const SCRIPT_URL =
+      'https://raw.githubusercontent.com/kui/ansi_pixels/master/tool/ansi-pixels.py';
   static const SHARE_LINK = 'http://ansipixels.k-ui.jp/%s.html';
   static const ANSI_TEXT_URL = 'http://ansipixels.k-ui.jp/%s';
   static final Rgba lightGridColor = new Rgba(255, 255, 255, 127);
@@ -25,20 +25,33 @@ class AnsiPixelsElement extends PolymerElement {
 
   // settings
   @published
-  String get hpixelsSetting => readValue(#hpixelsSetting, () => DEFAULT_PIXELS.toString());
-  set hpixelsSetting(String s) { writeValue(#hpixelsSetting, s); }
+  String get hpixelsSetting =>
+      readValue(#hpixelsSetting, () => DEFAULT_PIXELS.toString());
+  set hpixelsSetting(String s) {
+    writeValue(#hpixelsSetting, s);
+  }
   @published
-  String get vpixelsSetting => readValue(#vpixelsSetting, () => DEFAULT_PIXELS.toString());
-  set vpixelsSetting(String s) { writeValue(#vpixelsSetting, s); }
+  String get vpixelsSetting =>
+      readValue(#vpixelsSetting, () => DEFAULT_PIXELS.toString());
+  set vpixelsSetting(String s) {
+    writeValue(#vpixelsSetting, s);
+  }
   @published
-  String get pixelSizeSetting => readValue(#pixelSizeSetting, () => DEFAULT_PIXEL_SIZE.toString());
-  set pixelSizeSetting(String s) { writeValue(#pixelSizeSetting, s); }
+  String get pixelSizeSetting =>
+      readValue(#pixelSizeSetting, () => DEFAULT_PIXEL_SIZE.toString());
+  set pixelSizeSetting(String s) {
+    writeValue(#pixelSizeSetting, s);
+  }
   @published
   String get fgColor => readValue(#fgColor, () => 'White');
-  set fgColor(String s) { writeValue(#fgColor, s); }
+  set fgColor(String s) {
+    writeValue(#fgColor, s);
+  }
   @published
   String get bgColor => readValue(#bgColor, () => 'RGBA(0, 0, 0, 0.8)');
-  set bgColor(String s) { writeValue(#bgColor, s); }
+  set bgColor(String s) {
+    writeValue(#bgColor, s);
+  }
   @published
   bool get nogrids => readValue(#nogrids, () => false);
   set nogrids(bool b) => writeValue(#nogrids, b);
@@ -57,13 +70,19 @@ class AnsiPixelsElement extends PolymerElement {
 
   @reflectable
   int get hpixels => _parsePixels(hpixelsSetting);
-  set hpixels(int i) { hpixelsSetting = i.toString(); }
+  set hpixels(int i) {
+    hpixelsSetting = i.toString();
+  }
   @reflectable
   int get vpixels => _parsePixels(vpixelsSetting);
-  set vpixels(int i) { vpixelsSetting = i.toString(); }
+  set vpixels(int i) {
+    vpixelsSetting = i.toString();
+  }
   @reflectable
   int get pixelSize => _parsePixelSize(pixelSizeSetting);
-  set pixelSize(int i) { pixelSizeSetting = i.toString(); }
+  set pixelSize(int i) {
+    pixelSizeSetting = i.toString();
+  }
   @reflectable
   AnsiColorCode get drawingColorCode =>
       _palette == null ? null : _palette.ansiCode;
@@ -82,9 +101,7 @@ class AnsiPixelsElement extends PolymerElement {
   @observable String gridColor = lightGridColor.toColorString();
   @observable String ansiTextUrl;
   @observable String shareLink;
-  @observable ObservableMap commands = toObservable({
-    'script': true
-  });
+  @observable ObservableMap commands = toObservable({'script': true});
   @observable String pythonArgs;
   @observable bool isStackingHistory = false;
 
@@ -116,7 +133,9 @@ class AnsiPixelsElement extends PolymerElement {
     bgColorChanged();
     _initCallbacks();
     _startUrlFragmentObsevation();
-    async((_) { _updateZipped();});
+    async((_) {
+      _updateZipped();
+    });
     _initLocalStorageProps();
   }
 
@@ -124,8 +143,7 @@ class AnsiPixelsElement extends PolymerElement {
     final saved = window.localStorage['commands'];
     if (saved != null) {
       print('load command: $saved');
-      commands.keys
-        .forEach((k) => commands[k] = (k == saved));
+      commands.keys.forEach((k) => commands[k] = (k == saved));
       commands[saved] = true;
     }
     onPropertyChange(commands, #values, () {
@@ -151,7 +169,8 @@ class AnsiPixelsElement extends PolymerElement {
     _loadZippedJsonFromHashFragment(window.location.hash, true);
   }
 
-  void _loadZippedJsonFromHashFragment(String hash, [bool updateZippedJson = false]) {
+  void _loadZippedJsonFromHashFragment(String hash,
+      [bool updateZippedJson = false]) {
     if (hash == null) return;
 
     final zipped = (hash.startsWith('#')) ? hash.substring(1) : hash;
@@ -199,8 +218,9 @@ class AnsiPixelsElement extends PolymerElement {
       });
       afterRendered = null;
       if (!updateZippedJson)
-        // canncel zippedJson update because the browser history go forward
-        new Timer(ZIPPED_JSON_UPDATE_DELAY * 0.9, () => _clearZippedJsonUpdater());
+          // canncel zippedJson update because the browser history go forward
+          new Timer(
+              ZIPPED_JSON_UPDATE_DELAY * 0.9, () => _clearZippedJsonUpdater());
     };
   }
 
@@ -219,11 +239,11 @@ class AnsiPixelsElement extends PolymerElement {
       final oldHasFloatLayer = _haveFloatLayer(e.oldAction);
       notifyPropertyChange(#hasSelection, oldHasSelection, hasSelection);
       notifyPropertyChange(#hasFloatLayer, oldHasFloatLayer, hasFloatLayer);
-      notifyPropertyChange(#hasOutline, oldHasSelection || oldHasFloatLayer,
-          hasOutline);
+      notifyPropertyChange(
+          #hasOutline, oldHasSelection || oldHasFloatLayer, hasOutline);
       final oldIsPixelPickingAction = e.oldAction is PixelPickingAction;
-      notifyPropertyChange(#isPixelPickingAction, oldIsPixelPickingAction,
-          isPixelPickingAction);
+      notifyPropertyChange(
+          #isPixelPickingAction, oldIsPixelPickingAction, isPixelPickingAction);
 
       currentActionName = _getCurrentActionName(e.newAction);
     });
@@ -240,9 +260,10 @@ class AnsiPixelsElement extends PolymerElement {
 
   String _getCurrentActionName(Action a) {
     if (a is DrawingAction) {
-      return (drawingColorCode == null) ?
-          'Erase' : 'Drawing with code:${drawingColorCode.code}';
-    } else if (a is SameColorsSelectionAction){
+      return (drawingColorCode == null)
+          ? 'Erase'
+          : 'Drawing with code:${drawingColorCode.code}';
+    } else if (a is SameColorsSelectionAction) {
       return 'Select all same colors';
     } else if (a is SameColorNeighborsSelectionAction) {
       return 'Select same color neighbors';
@@ -310,7 +331,7 @@ class AnsiPixelsElement extends PolymerElement {
     });
   }
 
-  void _updateZipped(){
+  void _updateZipped() {
     _clearZippedJsonUpdater();
 
     final newZippedJson = toZippedJson();
@@ -344,8 +365,13 @@ class AnsiPixelsElement extends PolymerElement {
 
   void _updateHistory() {
     final uri = Uri.parse(window.location.href);
-    final newUri = new Uri(fragment: zippedJson, query: uri.query,
-        host: uri.host, path: uri.path, port: uri.port, scheme: uri.scheme,
+    final newUri = new Uri(
+        fragment: zippedJson,
+        query: uri.query,
+        host: uri.host,
+        path: uri.path,
+        port: uri.port,
+        scheme: uri.scheme,
         userInfo: uri.userInfo);
 
     final hash = window.location.hash;
@@ -431,12 +457,12 @@ class AnsiPixelsElement extends PolymerElement {
     'pixels': _generateAnsiPixels()
   };
 
-  AnsiPixels _generateAnsiPixels() =>
-      new AnsiPixels.generate(hpixels, vpixels, (int x, int y) {
-        final color = canvas.getColor(x, y);
-        final code = getAnsiCodeFromColor(color);
-        return code;
-      });
+  AnsiPixels _generateAnsiPixels() => new AnsiPixels.generate(hpixels, vpixels,
+      (int x, int y) {
+    final color = canvas.getColor(x, y);
+    final code = getAnsiCodeFromColor(color);
+    return code;
+  });
 
   Object toZippedJson() => zip(JSON.encode(this), urlSafe: true);
 }
@@ -450,5 +476,4 @@ bool _haveSelection(Action a) =>
     a is SelectionAction && a.bounds.points.isNotEmpty;
 bool _haveFloatLayer(Action a) =>
     a is FloatLayerAction && a.floatLayer.points.isNotEmpty;
-bool _haveOutline(Action a) =>
-    a is OutlinableAction && a.outline.isNotEmpty;
+bool _haveOutline(Action a) => a is OutlinableAction && a.outline.isNotEmpty;

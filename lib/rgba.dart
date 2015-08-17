@@ -5,14 +5,19 @@ import 'dart:html';
 /// see http://www.w3.org/TR/AERT#color-contrast
 class Rgba {
   static const BRIGHTNESS_THRESHOLD = 125;
-  static const CANVAS_WIDTH = 1, CANVAS_HEIGHT = 1;
+  static const CANVAS_WIDTH = 1,
+      CANVAS_HEIGHT = 1;
 
   final int red, green, blue, alpha;
   final int brightness;
 
-  Rgba(int red, int green, int blue, int alpha):
-    this.red = red, this.green = green, this.blue = blue, this.alpha = alpha,
-    this.brightness = ((red * 299 + green * 587 + blue * 114) / 1000).round();
+  Rgba(int red, int green, int blue, int alpha)
+      : this.red = red,
+        this.green = green,
+        this.blue = blue,
+        this.alpha = alpha,
+        this.brightness = ((red * 299 + green * 587 + blue * 114) / 1000)
+            .round();
 
   factory Rgba.fromColorString(String color) {
     final ctx = _createContext();
@@ -22,7 +27,8 @@ class Rgba {
   }
 
   static CanvasRenderingContext2D _createContext() {
-    final canvas = new CanvasElement(width: CANVAS_WIDTH, height: CANVAS_HEIGHT);
+    final canvas =
+        new CanvasElement(width: CANVAS_WIDTH, height: CANVAS_HEIGHT);
     return canvas.getContext('2d');
   }
 
@@ -40,11 +46,10 @@ class Rgba {
       ..fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   }
 
-  Rgba chooseColor(Iterable<Rgba> rgbas) =>
-      rgbas
-        .where((r) => (r.brightness - brightness).abs() > BRIGHTNESS_THRESHOLD)
-        .fold(null, (Rgba prev, Rgba r) =>
-            (prev != null && r.brightness > prev.brightness) ? prev : r);
+  Rgba chooseColor(Iterable<Rgba> rgbas) => rgbas
+      .where((r) => (r.brightness - brightness).abs() > BRIGHTNESS_THRESHOLD)
+      .fold(null, (Rgba prev, Rgba r) =>
+          (prev != null && r.brightness > prev.brightness) ? prev : r);
 
   @override
   toString() => toColorString();

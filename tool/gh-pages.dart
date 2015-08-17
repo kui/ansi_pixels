@@ -1,5 +1,4 @@
 #!/usr/bin/env dart
-
 import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:ghpages_generator/ghpages_generator.dart' as gh;
@@ -14,5 +13,4 @@ main() {
 }
 
 String get projectDir =>
-    path.absolute(
-        path.dirname(path.dirname(Platform.script.toFilePath())));
+    path.absolute(path.dirname(path.dirname(Platform.script.toFilePath())));
