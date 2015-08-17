@@ -1,7 +1,7 @@
 name: ansi_pixels
 description: A Polymer.dart application to edit ANSI art
 environment:
-  sdk: '>=1.6.0'
+  sdk: '>=1.11.0'
 dependencies:
   polymer: '>=0.16.0 <0.17.0'
   core_elements: '>=0.7.1 <0.8.0'
