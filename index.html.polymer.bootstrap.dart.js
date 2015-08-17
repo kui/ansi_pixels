@@ -3042,7 +3042,8 @@ return"-"}},
 GX:[function(a){this.Ey(a)},"$0","gwJ",0,0,1],
 hd:[function(a){this.Ey(a)},"$0","gHm",0,0,1],
 dn:[function(a){this.Ey(a)},"$0","gHU",0,0,1],
-U1:[function(a){this.Ey(a)},"$0","gcY",0,0,1],
+U1:[function(a){J.S8((a.shadowRoot||a.webkitShadowRoot).querySelector("pixel-canvas"),a.Jc)
+this.Ey(a)},"$0","gcY",0,0,1],
 xJ:[function(a){this.Ey(a)},"$0","gBT",0,0,1],
 o6:[function(a){var z=new W.wz((a.shadowRoot||a.webkitShadowRoot).querySelectorAll("#console,#samples"))
 z.aN(z,new N.N9(a))},"$0","gRm",0,0,1],
